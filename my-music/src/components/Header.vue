@@ -72,14 +72,15 @@ a {
 }
 .line {
     float: left;
-    width: 100%;
+    width: 1280px;
     height: 5px;
     background-color: #c20c0c;
     //   margin-top: 70px;
   }
 .header {
   height: 70px;
-  width: 100%;
+  // width: 100%;
+    width: 1280px;
   background-color: #242424;
   padding: 0 80px;
   

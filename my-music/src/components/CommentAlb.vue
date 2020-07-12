@@ -19,9 +19,9 @@
         </div>
       </div>
     </div>
-      <h5>评论</h5>
+    <h5>评论</h5>
     <ul>
-      <li v-for="item in sug1">
+      <li v-for="item in alb1">
         <div class="head">
           <img :src="item.user.avatarUrl" alt />
         </div>
@@ -38,7 +38,7 @@
           </div>
         </div>
       </li>
-      <li v-for="item in sug2">
+      <li v-for="item in alb2">
         <div class="head">
           <img :src="item.user.avatarUrl" alt />
         </div>
@@ -64,29 +64,28 @@
 export default {
   data() {
     return {
-      sugId: '',
-      sug1: [],
-      sug2:[],
-
+      albId: "",
+      alb1: [],
+      alb2: []
     };
   },
+  
   mounted() {
-    this.getSug();
+    this.getAlb();
   },
   methods: {
-    getSug() {
-      this.sugId = localStorage.getItem("sug");
-      // console.log(this.sugId);
-      this.$http.get("/comment/playlist?id=" + this.sugId).then(
+    getAlb() {
+      this.albId = localStorage.getItem("alb");
+      // console.log(this.albId);
+      this.$http.get("/comment/album?id=" + this.albId).then(
         res => {
-          this.sug1 = res.data.hotComments;
-          this.sug2 = res.data.comments;
-          // console.log(this.sug);
+          this.alb1 = res.data.hotComments;
+          this.alb2 = res.data.comments;
+          // console.log(this.alb1);
         },
         err => {}
       );
-    },
-    
+    }
   }
 };
 </script>

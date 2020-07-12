@@ -40,11 +40,23 @@ import bus from "../assets/event.js";
 
 export default {
   data() {
-    return {};
+    return {
+      msg: ""
+    };
   },
-  mounted() {},
+
   destroyed() {},
-  methods: {}
+  methods: {
+    getMsg() {
+      bus.$on("send", data => {
+        this.msg = data;
+        console.log(data);
+      });
+    }
+  },
+  mounted() {
+    this.getMsg();
+  }
 };
 </script>
 
@@ -62,6 +74,7 @@ a {
 }
 .nav {
   height: 35px;
+  width: 1280px;
   background-color: #c20c0c;
   padding: 0 150px;
   .active {

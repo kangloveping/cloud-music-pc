@@ -28,8 +28,8 @@
           <ul>
             <li v-for="item in suggest">
               <div class="s-info">
-                <a href="javascript:void(0)">
-                  <img :src=" item.picUrl " alt />
+                <a href="http://localhost:8080/list" >
+                  <img :src=" item.picUrl " @click="sendSug(item.id)" alt />
                 </a>
                 <div class="bottom">
                   <span class="el-icon-headset"></span>
@@ -37,7 +37,7 @@
                   <a href="#" class="el-icon-video-play"></a>
                 </div>
               </div>
-              <p>
+              <p @click="sendSug(item.id)">
                 <a href="javascript:void(0)">{{item.name}}</a>
               </p>
             </li>
@@ -58,11 +58,11 @@
         <div class="disc">
           <ul>
             <li v-for="item in newDisc">
-              <a href="#">
+              <a href="http://localhost:8080/album" @click="sendAlb(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
               <p>
-                <a href="#">{{item.name}}</a>
+                <a href="http://localhost:8080/album" @click="sendAlb(item.id)">{{item.name}}</a>
               </p>
               <p class="disc-singer">
                 <a href="#">{{item.artist.name}}</a>
@@ -297,13 +297,14 @@
 </template>
 
 <script>
+import bus from "../assets/event.js";
 export default {
   data() {
     return {
       suggest: [],
       newDisc: [],
       topLists: [],
-      listName: []
+      listName: [],
     };
   },
   mounted() {
@@ -316,16 +317,22 @@ export default {
       this.$http.get("/personalized?limit=8").then(
         res => {
           this.suggest = res.data.result;
-          // console.log(this.suggest);
         },
         err => {}
       );
     },
+    sendSug(sugid) {
+          localStorage.setItem('sug',sugid)
+    },
+    sendAlb(albid) {
+          localStorage.setItem('alb',albid)
+    },
+
     newDic: function() {
       this.$http.get("/top/album?offset=0&limit=5").then(
         res => {
           this.newDisc = res.data.albums;
-          // console.log(this.newDisc);
+          console.log(this.newDisc);
         },
         err => {}
       );

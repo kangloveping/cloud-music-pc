@@ -1,27 +1,24 @@
 <template>
-  <div class="list-suggest">
+  <div class="list-album">
     <div class="left">
       <div class="wrap">
         <div class="pic">
-          <img :src="sug.playlist.coverImgUrl" alt />
+          <img :src="alb.album.picUrl" alt />
         </div>
         <div class="info">
           <div class="title">
             <i></i>
             <div>
-              <h3>{{sug.playlist.name}}</h3>
+              <h3>{{alb.album.name}}</h3>
             </div>
           </div>
-          <div class="user">
-            <a href="#">
-              <img :src="sug.playlist.creator.avatarUrl" alt />
-            </a>
-            <span>
-              <a href="#">{{sug.playlist.creator.nickname}}</a>
-            </span>
-            <i></i>
-            <span>2018-09-07 创建</span>
-          </div>
+          <p>
+            歌手：
+            <a href="#" v-for="item in alb.album.artists">{{item.name}}</a>
+          </p>
+          <p>发行时间：2020-06-23</p>
+          <p>发行公司： {{alb.album.company}}</p>
+
           <div class="operation">
             <a href="#" class="btn1">
               <i class="el-icon-video-play"></i>
@@ -32,11 +29,11 @@
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-folder-add"></i>
-              <span>({{sug.playlist.playCount}})</span>
+              <span>收藏</span>
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-share"></i>
-              <span>({{sug.playlist.shareCount}})</span>
+              <span>({{alb.album.info.commentThread.shareCount}})</span>
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-download"></i>
@@ -44,20 +41,22 @@
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-chat-line-square"></i>
-              <span>({{sug.playlist.commentCount}})</span>
+              <span>({{alb.album.info.commentThread.commentCount}})</span>
             </a>
           </div>
-          <div class="tags">
-            <span>标签:</span>
-            <a href="#" v-for="ite in sug.playlist.tags">{{ite}}</a>
-          </div>
+        </div>
+        <div class="intrad">
           <p class="intra" v-show="isShow">
-            <span>介绍：</span>
-            {{sug.playlist.description }}
+            <b>专辑介绍：</b>
+            <br />
+            {{alb.album.description}}
+            <!-- {{sug.playlist.description }} -->
           </p>
           <p class="intra1" v-show="!isShow">
-            <span>介绍：</span>
-            {{sug.playlist.description }}
+            <b>专辑介绍：</b>
+            <br />
+            {{alb.album.description}}
+            <!-- {{sug.playlist.description }} -->
           </p>
           <a href="javascript:void(0)" class="moreIntra" v-show="isShow" @click="isShow1">
             展开
@@ -71,16 +70,12 @@
       </div>
       <div class="list">
         <div class="head">
-          <h3>歌曲列表</h3>
+          <h3>包含歌曲列表</h3>
           <span>20首歌</span>
           <a href="#" class="out">
             <i class="el-icon-headset"></i>
             <span>生成外链播放器</span>
           </a>
-          <span>
-            播放：
-            <b>345646333</b>次
-          </span>
         </div>
         <div class="list-c">
           <table>
@@ -90,7 +85,7 @@
                   <div></div>
                 </th>
                 <th class="w2">
-                  <div>歌曲列表</div>
+                  <div>歌曲标题</div>
                 </th>
                 <th class="w3">
                   <div>时长</div>
@@ -98,16 +93,13 @@
                 <th class="w4">
                   <div>歌手</div>
                 </th>
-                <th class="w5">
-                  <div>专辑</div>
-                </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in sug.playlist.tracks">
+              <tr v-for="(item,index) in alb.songs">
                 <td class="w1">
                   <div>
-                    <span>{{index}}</span>
+                    <span>{{index+1}}</span>
                     <i class="el-icon-video-play btn-play"></i>
                   </div>
                 </td>
@@ -140,9 +132,6 @@
                     <span v-for="items in item.ar">{{items.name}}</span>
                   </a>
                 </td>
-                <td class="w5">
-                  <a href="#">{{item.al.name}}</a>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -152,33 +141,68 @@
           <a href="#" class="now-do">立即下载</a>
         </div>
       </div>
-      <Comment></Comment>
+      <CommentAlb></CommentAlb>
     </div>
     <div class="right">
-      <h3>喜欢这个歌单的人</h3>
+      <h3>喜欢这个专辑的人</h3>
       <div class="liker">
         <ul>
-          <li v-for="item in collects">
+          <li >
             <a href="#">
-              <img :src="item.avatarUrl" alt />
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
+            </a>
+          </li>
+          <li >
+            <a href="#">
+              <img src="https://p2.music.126.net/qTBB73-mNghJYpoUy1b5LQ==/109951165125496938.jpg" alt />
             </a>
           </li>
         </ul>
       </div>
-      <h3>相关推荐</h3>
+      <h3>
+        Ta的其他热门专辑
+        <a href="#">全部</a>
+      </h3>
       <div class="relate">
         <ul>
-          <li v-for="item in relatives">
+          <li v-for="item in authAlb">
             <a href="#">
-              <img :src="item.coverImgUrl" alt />
+              <img :src="item.picUrl" alt />
             </a>
             <a href="#">
               <h3>{{item.name}}</h3>
             </a>
-            <span>by</span>
-            <span>
-              <a href="#">{{item.creator.nickname}}</a>
-            </span>
+            <span>2020-07-12</span>
           </li>
         </ul>
       </div>
@@ -187,40 +211,62 @@
 </template>
 
 <script>
-import Comment from "./Comment";
+import CommentAlb from "./CommentAlb";
 import bus from "../assets/event.js";
 export default {
   data() {
     return {
-      sugId: "",
+      artId: "",
+      albId: "",
       isShow: true,
       sug: [],
+      alb: [],
+      authAlb: [],
       collects: [],
       relatives: []
     };
   },
+  //相当于ready函数
   mounted() {
-    this.getSug();
+    this.getAlb();
     this.collect();
     this.relative();
+    this.getAuthAlb();
+  },
+  //监听数据变化执行对应函数
+  watch: {
+    artId: "getAuthAlb" // 值为methods的方法名
   },
   methods: {
-    getSug() {
-      this.sugId = localStorage.getItem("sug");
-      // console.log(this.sugId);
-      this.$http.get("/playlist/detail?id=" + this.sugId).then(
+    getAlb() {
+      this.albId = localStorage.getItem("alb");
+      this.$http.get("/album?id=" + this.albId).then(
         res => {
-          this.sug = res.data;
-          // console.log(this.sug);
+          this.alb = res.data;
+          this.artId = res.data.songs[0].ar[0].id;
+          console.log(this.artId);
         },
         err => {}
       );
     },
+    getAuthAlb() {
+      if (this.artId != "") {
+        this.$http.get("/artist/album?limit=5&id=" + this.artId).then(
+          res => {
+            this.authAlb = res.data.hotAlbums;
+            console.log(this.authAlb);
+          },
+          err => {}
+        );
+      } else {
+        getAuthAlb();
+      }
+    },
+
     isShow1() {
       this.isShow = !this.isShow;
     },
     collect() {
-      // console.log(this.sugId);
       this.$http.get("/playlist/subscribers?limit=8&id=" + this.sugId).then(
         res => {
           this.collects = res.data.subscribers;
@@ -238,7 +284,7 @@ export default {
     }
   },
   components: {
-    Comment
+    CommentAlb
   }
 };
 </script>
@@ -251,7 +297,7 @@ body {
 a:hover {
   text-decoration: underline;
 }
-.list-suggest {
+.list-album {
   width: 980px;
   min-height: 700px;
   margin: 0 auto;
@@ -286,8 +332,13 @@ a:hover {
       .info {
         float: right;
         width: 410px;
-        // height: 230px;
-        // background-color: #624216;
+        p {
+          font-size: 12px;
+          line-height: 24px;
+          a {
+            color: #0c73c2;
+          }
+        }
         .title {
           width: 410px;
           line-height: 24px;
@@ -298,7 +349,7 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("../assets/img/icon.png") 0 -243px no-repeat;
+            background: url("../assets/img/icon.png") 0 -186px no-repeat;
           }
           div {
             margin-left: 64px;
@@ -310,40 +361,11 @@ a:hover {
             }
           }
         }
-        .user {
-          width: 410px;
-          // height: 35px;
-          line-height: 35px;
-          margin-bottom: 20px;
-          a {
-            margin-right: 5px;
-            font-size: 12px;
-            color: #0c73c2;
-            img {
-              float: left;
-              width: 35px;
-              height: 35px;
-            }
-          }
-          span {
-            line-height: 35px;
-            font-size: 12px;
-            float: left;
-            margin-left: 10px;
-            color: #999;
-          }
-          i {
-            display: block;
-            float: left;
-            width: 11px;
-            height: 13px;
-            background: url("../assets/img/icon.png") 0 0 no-repeat;
-            margin-top: 10px;
-          }
-        }
+
         .operation {
           width: 100%;
           // height: 31px;
+          margin-top: 20px;
           margin-bottom: 25px;
           a {
             display: inline-block;
@@ -383,46 +405,28 @@ a:hover {
             color: #333;
           }
         }
-        .tags {
-          width: 410px;
-          // height: 25px;
-          line-height: 30px;
-          overflow: hidden;
-          font-size: 12px;
-          color: #777;
-          span {
-            display: block;
-            float: left;
-          }
-          a {
-            display: block;
-            margin-left: 10px;
-            float: left;
-            width: 45px;
-            height: 22px;
-            line-height: 22px;
-            border-radius: 10px;
-            background-color: #f2f2f2;
-            text-align: center;
-            margin-top: 3px;
-            color: #777;
-            box-shadow: 0 0 2px 0 #666;
-          }
-        }
+      }
+      .intrad {
+        float: left;
+        margin-top: 15px;
+
         .intra {
-          // display: block;
-          max-height: 60px;
+          b {
+            color: #000;
+          }
+          color: #999;
+          max-height: 140px;
           line-height: 20px;
           font-size: 12px;
           margin-top: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 5;
           -webkit-box-orient: vertical;
         }
         .intra1 {
-          // display: none;
+          color: #999;
           line-height: 20px;
           font-size: 12px;
           margin-top: 5px;
@@ -465,7 +469,8 @@ a:hover {
           }
         }
         .out {
-          margin-left: 260px;
+          margin-right: 15px;
+          float: right;
           color: #4996d1;
           i {
             font-size: 12px;
@@ -486,17 +491,15 @@ a:hover {
           border-spacing: 0;
           table-layout: fixed;
           .w2 {
-            width: 237px;
+            width: 330px;
           }
           .w3 {
-            width: 111px;
+            width: 110px;
           }
           .w4 {
-            width: 89px;
+            width: 128px;
           }
-          .w5 {
-            max-width: 127px;
-          }
+
           thead {
             th {
               border-left: 1px solid #d3d3d3;
@@ -542,12 +545,14 @@ a:hover {
               span {
                 display: block;
                 float: left;
+                color: #999;
               }
               .btn-play {
                 display: block;
                 float: right;
                 font-size: 20px;
                 margin-top: 5px;
+                margin-right: 15px;
                 color: #b2b2b2;
                 &:hover {
                   color: #333;
@@ -571,6 +576,7 @@ a:hover {
               }
             }
             .w3 {
+              color: #777;
               .more-menu {
                 display: none;
                 a {
@@ -632,6 +638,10 @@ a:hover {
       border-bottom: 1px solid #ccc;
       color: #333;
       font-size: 12px;
+      a {
+        float: right;
+        font-weight: normal;
+      }
     }
     .liker {
       height: 130px;
@@ -674,10 +684,7 @@ a:hover {
         float: left;
         font-size: 12px;
         margin-left: 10px;
-        a {
-          margin-left: -5px;
-          color: #666;
-        }
+        color: #666;
       }
     }
   }
