@@ -113,7 +113,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top1s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="#" @click="sendMusicIb(items.id)">{{items.name}}</a>
+                  <a href="/song" @click="sendMusicIb(items.id)">{{items.name}}</a>
                   <div class="oper">
                     <a href="#">
                       <i class="el-icon-video-play"></i>
@@ -162,7 +162,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top2s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="#">{{items.name}}</a>
+                  <a href="/song">{{items.name}}</a>
                   <div class="oper">
                     <a href="#">
                       <i class="el-icon-video-play"></i>
@@ -211,7 +211,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top3s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="#">{{items.name}}</a>
+                  <a href="/song">{{items.name}}</a>
                   <div class="oper">
                     <a href="#">
                       <i class="el-icon-video-play"></i>

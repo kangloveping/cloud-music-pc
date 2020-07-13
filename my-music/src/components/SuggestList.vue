@@ -303,7 +303,7 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("../assets/img/icon.png") 0 -243px no-repeat;
+            background: url("https://s2.music.126.net/style/web2/img/icon.png?eeee471ebb979bb12ecdbb1c98108007") 0 -243px no-repeat;
           }
           div {
             margin-left: 64px;

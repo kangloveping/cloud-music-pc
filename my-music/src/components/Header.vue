@@ -6,7 +6,7 @@
       </div>
       <div>
         <ul class="nav">
-          <li class="active">
+          <li :class="isActive">
             <span>
               <a href="javascript:void(0)">发现音乐</a>
             </span>
@@ -46,7 +46,14 @@
       <button class="author">创作者中心</button>
       <div class="search">
         <i class="el-icon-search"></i>
-        <input id="search" type="text" placeholder="音乐/视频/电台/用户" style />
+        <input
+          id="search"
+          v-model="query"
+          @keyup.enter="searchMusic"
+          type="text"
+          placeholder="音乐/视频/电台/用户"
+          style
+        />
       </div>
     </div>
     <div class="line"></div>
@@ -54,7 +61,21 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      query: "",
+      isActive:'active'
+    };
+  },
+  methods: {
+    searchMusic() {
+      this.isActive='';
+      localStorage.setItem("key", this.query);
+      window.location.href="http://localhost:8080/search";
+    }
+  }
+};
 </script>
 
 <style scroped lang='less'>
@@ -71,19 +92,19 @@ a {
   color: rgb(202, 193, 193);
 }
 .line {
-    float: left;
-    width: 1280px;
-    height: 5px;
-    background-color: #c20c0c;
-    //   margin-top: 70px;
-  }
+  float: left;
+  width: 1280px;
+  height: 5px;
+  background-color: #c20c0c;
+  //   margin-top: 70px;
+}
 .header {
   height: 70px;
   // width: 100%;
-    width: 1280px;
+  width: 1280px;
   background-color: #242424;
   padding: 0 80px;
-  
+
   .logo {
     width: 176px;
     height: 70px;
@@ -151,8 +172,8 @@ a {
     color: #ccc;
     border-radius: 20px;
     cursor: pointer;
-    
-    &:hover{
+
+    &:hover {
       border: 1px solid #fff;
     }
   }

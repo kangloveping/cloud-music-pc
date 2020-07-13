@@ -63,9 +63,9 @@ export default {
   props: ["Ids"],
   data() {
     return {
-      sugIds: "",
+      musicid: "",
       sug1: [],
-      sug2: []
+      sug2: [],
     };
   },
   mounted() {
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getSug() {
-        console.log(this.Ids);
+      console.log(this.Ids);
 
       if (this.Ids != null) {
         console.log(this.Ids);
@@ -89,9 +89,9 @@ export default {
           err => {}
         );
       } else {
-        this.sugIds = localStorage.getItem("sug");
-            // console.log(this.sugIds);
-        this.$http.get("/comment/playlist?id=" + this.sugIds).then(
+        this.musicid = localStorage.getItem("music");
+        console.log(this.musicid);
+        this.$http.get("/comment/music?limit=50&id=" + this.musicid).then(
           res => {
             this.sug1 = res.data.hotComments;
             this.sug2 = res.data.comments;
