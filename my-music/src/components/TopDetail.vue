@@ -1,27 +1,46 @@
 <template>
-  <div class="list-suggest">
+  <div class="topdetail">
     <div class="left">
+      <div class="toplist">
+        <h3>云音乐特色榜</h3>
+        <ul>
+          <li v-for="(item,index) in allTop" v-if="index<4" @click="changeList(item.id)">
+            <div class="coverpic">
+              <img :src="item.coverImgUrl" alt />
+            </div>
+            <div class="infos">
+              <h3>{{item.name}}</h3>
+              <p>{{item.updateFrequency}}</p>
+            </div>
+          </li>
+        </ul>
+        <h3 class="media">全球媒体榜</h3>
+        <ul>
+          <li v-for="(item,index) in allTop" v-if="index>4" @click="changeList(item.id)">
+            <div class="coverpic">
+              <img :src="item.coverImgUrl" alt />
+            </div>
+            <div class="infos">
+              <h3>{{item.name}}</h3>
+              <p>{{item.updateFrequency}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="right">
       <div class="wrap">
         <div class="pic">
-          <img :src="sug.playlist.coverImgUrl" alt />
+          <img :src="detail.coverImgUrl" alt />
         </div>
         <div class="info">
           <div class="title">
-            <i></i>
             <div>
-              <h3>{{sug.playlist.name}}</h3>
+              <h3>{{detail.name}}</h3>
             </div>
           </div>
-          <div class="user">
-            <a href="#">
-              <img :src="sug.playlist.creator.avatarUrl" alt />
-            </a>
-            <span>
-              <a href="#">{{sug.playlist.creator.nickname}}</a>
-            </span>
-            <i></i>
-            <span>2018-09-07 创建</span>
-          </div>
+          <p>最近更新： 07月13日 （每天更新）</p>
+
           <div class="operation">
             <a href="#" class="btn1">
               <i class="el-icon-video-play"></i>
@@ -32,11 +51,11 @@
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-folder-add"></i>
-              <span>({{sug.playlist.playCount}})</span>
+              <span>({{detail.subscribedCount}})</span>
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-share"></i>
-              <span>({{sug.playlist.shareCount}})</span>
+              <span>({{detail.shareCount}})</span>
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-download"></i>
@@ -44,42 +63,18 @@
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-chat-line-square"></i>
-              <span>({{sug.playlist.commentCount}})</span>
+              <span>({{detail.commentCount}})</span>
             </a>
           </div>
-          <div class="tags">
-            <span>标签:</span>
-            <a href="#" v-for="ite in sug.playlist.tags">{{ite}}</a>
-          </div>
-          <p class="intra" v-show="isShow">
-            <span>介绍：</span>
-            {{sug.playlist.description }}
-          </p>
-          <p class="intra1" v-show="!isShow">
-            <span>介绍：</span>
-            {{sug.playlist.description }}
-          </p>
-          <a href="javascript:void(0)" class="moreIntra" v-show="isShow" @click="isShow1">
-            展开
-            <i class="el-icon-arrow-down"></i>
-          </a>
-          <a href="javascript:void(0)" class="moreIntra1" v-show="!isShow" @click="isShow1">
-            收起
-            <i class="el-icon-arrow-down"></i>
-          </a>
         </div>
       </div>
       <div class="list">
         <div class="head">
           <h3>歌曲列表</h3>
-          <span>20首歌</span>
-          <a href="#" class="out">
-            <i class="el-icon-headset"></i>
-            <span>生成外链播放器</span>
-          </a>
-          <span>
+          <span>100首歌</span>
+          <span class="out">
             播放：
-            <b>345646333</b>次
+            <b>{{detail.playCount}}</b>次
           </span>
         </div>
         <div class="list-c">
@@ -90,7 +85,7 @@
                   <div></div>
                 </th>
                 <th class="w2">
-                  <div>歌曲列表</div>
+                  <div>标题</div>
                 </th>
                 <th class="w3">
                   <div>时长</div>
@@ -98,16 +93,13 @@
                 <th class="w4">
                   <div>歌手</div>
                 </th>
-                <th class="w5">
-                  <div>专辑</div>
-                </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in sug.playlist.tracks">
+              <tr v-for="(item,index) in detail.tracks">
                 <td class="w1">
                   <div>
-                    <span>{{index}}</span>
+                    <span>{{index+1}}</span>
                     <i class="el-icon-video-play btn-play"></i>
                   </div>
                 </td>
@@ -140,107 +132,77 @@
                     <span v-for="items in item.ar">{{items.name}}</span>
                   </a>
                 </td>
-                <td class="w5">
-                  <a href="#">{{item.al.name}}</a>
-                </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="dol">
-          <span>查看更多内容，请下载客户端</span>
-          <a href="#" class="now-do">立即下载</a>
-        </div>
       </div>
       <div class="c-title">
-        <h3>歌曲列表</h3>
-        <span>共2313455条评论</span>
+        <h3>评论</h3>
+        <span>共{{detail.commentCount}}条评论</span>
       </div>
-      <Comment></Comment>
-
-    </div>
-    <div class="right">
-      <h3>喜欢这个歌单的人</h3>
-      <div class="liker">
-        <ul>
-          <li v-for="item in collects">
-            <a href="#">
-              <img :src="item.avatarUrl" alt />
-            </a>
-          </li>
-        </ul>
-      </div>
-      <h3>相关推荐</h3>
-      <div class="relate">
-        <ul>
-          <li v-for="item in relatives">
-            <a href="#">
-              <img :src="item.coverImgUrl" alt />
-            </a>
-            <a href="#">
-              <h3>{{item.name}}</h3>
-            </a>
-            <span>by</span>
-            <span>
-              <a href="#">{{item.creator.nickname}}</a>
-            </span>
-          </li>
-        </ul>
-      </div>
+      <Comment :Ids="listId" v-if="flag"></Comment>
     </div>
   </div>
 </template>
 
 <script>
 import Comment from "./Comment";
-import bus from "../assets/event.js";
+
 export default {
   data() {
     return {
-      sugId: "",
-      isShow: true,
-      sug: [],
-      collects: [],
-      relatives: []
+      detail: [],
+      allTop: [],
+      listId: ""
     };
   },
   mounted() {
-    this.getSug();
-    this.collect();
-    this.relative();
+    this.getDetail();
+    // this.getListId();
+    this.allTops();
   },
   methods: {
-    getSug() {
-      this.sugId = localStorage.getItem("sug");
-      // console.log(this.sugId);
-      this.$http.get("/playlist/detail?id=" + this.sugId).then(
+    //获取榜单详情json
+    getDetail() {
+      //获取通过a链接缓存在localStorage的list ID数据
+      this.listId = localStorage.getItem("list");
+      this.$http.get("/playlist/detail?id=" + this.listId).then(
         res => {
-          this.sug = res.data;
-          // console.log(this.sug);
+          this.detail = res.data.playlist;
         },
         err => {}
       );
     },
-    isShow1() {
-      this.isShow = !this.isShow;
-    },
-    collect() {
-      // console.log(this.sugId);
-      this.$http.get("/playlist/subscribers?limit=8&id=" + this.sugId).then(
+    //获取所有榜单json
+    allTops() {
+      this.$http.get("/toplist/detail").then(
         res => {
-          this.collects = res.data.subscribers;
+          this.allTop = res.data.list;
         },
         err => {}
       );
     },
-    relative() {
-      this.$http.get("/related/playlist?id=" + this.sugId).then(
+    //监听榜单的点击，切换对应的榜单id
+    changeList(changeId) {
+      //先销毁评论子组件，避免传值不进行改变
+      this.flag = false;
+      this.$http.get("/playlist/detail?id=" + changeId).then(
         res => {
-          this.relatives = res.data.playlists;
+          this.detail = res.data.playlist;
+          //改变榜单id
+          this.listId = changeId;
+          //重启子组件进行传值
+          this.flag = true;
         },
         err => {}
       );
-    }
+    },
+    
+    // getListId() {
+    //   this.listId = localStorage.getItem("list");
+    //   this.flag = true;
+    // }
   },
   components: {
     Comment
@@ -249,38 +211,87 @@ export default {
 </script>
 
 <style lang="less" scoped>
-body {
-  background-color: #fff;
-  box-sizing: border-box;
-}
-a:hover {
-  text-decoration: underline;
-}
-.list-suggest {
-  width: 980px;
-  min-height: 700px;
+.topdetail {
+  width: 982px;
+  height: 100%;
+  overflow: hidden;
   margin: 0 auto;
-  background-color: #fff;
   border: 1px solid #d3d3d3;
   border-width: 0 1px;
-  overflow: hidden;
+  min-height: 700px;
   .left {
-    float: left;
-    width: 710px;
+    width: 240px;
     height: 100%;
-    padding: 50px 30px 40px 40px;
     border-right: 1px solid #d3d3d3;
     border-width: 0 1px;
+    float: left;
+    // height: 700px;
+    background-color: #f9f9f9;
+    .toplist {
+      margin-top: 40px;
+      height: 100%;
+      h3 {
+        font-size: 14px;
+        padding: 0 10px 12px 15px;
+        font-family: simsun, \5b8b\4f53;
+        &.media {
+          margin-top: 20px;
+        }
+      }
+      ul {
+        cursor: pointer;
+        // vertical-align: middle;
+        li {
+          padding: 10px 0 10px 20px;
+          position: relative;
+          zoom: 1;
+          height: 60px;
+          overflow: hidden;
+          &:hover {
+            background-color: #e6e6e6;
+          }
+          .coverpic {
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            float: left;
+            img {
+              width: 40px;
+              height: 40px;
+            }
+          }
+          .infos {
+            float: left;
+            font-size: 12px;
+            margin-left: 8px;
+            h3 {
+              font-size: 13px;
+              padding: 0;
+              margin-bottom: 8px;
+            }
+            p {
+              color: #999;
+            }
+          }
+        }
+      }
+    }
+  }
+  .right {
+    float: right;
+    width: 740px;
+    height: 100%;
+    padding: 40px 30px 30px 40px;
     .wrap {
       width: 100%;
       height: 100%;
       background-color: #fff;
-      margin-bottom: 50px;
+      margin-bottom: 35px;
       overflow: hidden;
       .pic {
         float: left;
-        width: 200px;
-        height: 200px;
+        width: 156px;
+        height: 156px;
         padding: 3px;
         border: 1px solid #ddd;
         img {
@@ -289,10 +300,16 @@ a:hover {
         }
       }
       .info {
-        float: right;
-        width: 410px;
-        // height: 230px;
-        // background-color: #624216;
+        float: left;
+        margin-left: 30px;
+        padding-top: 20px;
+        p {
+          font-size: 12px;
+          line-height: 24px;
+          a {
+            color: #0c73c2;
+          }
+        }
         .title {
           width: 410px;
           line-height: 24px;
@@ -303,11 +320,9 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("../assets/img/icon.png") 0 -243px no-repeat;
+            background: url("../assets/img/icon.png") 0 -186px no-repeat;
           }
           div {
-            margin-left: 64px;
-            // float: left;
             h3 {
               line-height: 24px;
               font-size: 20px;
@@ -315,40 +330,11 @@ a:hover {
             }
           }
         }
-        .user {
-          width: 410px;
-          // height: 35px;
-          line-height: 35px;
-          margin-bottom: 20px;
-          a {
-            margin-right: 5px;
-            font-size: 12px;
-            color: #0c73c2;
-            img {
-              float: left;
-              width: 35px;
-              height: 35px;
-            }
-          }
-          span {
-            line-height: 35px;
-            font-size: 12px;
-            float: left;
-            margin-left: 10px;
-            color: #999;
-          }
-          i {
-            display: block;
-            float: left;
-            width: 11px;
-            height: 13px;
-            background: url("../assets/img/icon.png") 0 0 no-repeat;
-            margin-top: 10px;
-          }
-        }
+
         .operation {
           width: 100%;
           // height: 31px;
+          margin-top: 20px;
           margin-bottom: 25px;
           a {
             display: inline-block;
@@ -360,6 +346,7 @@ a:hover {
             background-color: #f2f2f2;
             box-shadow: 0 0 2px 0 #666;
             vertical-align: middle;
+            font-family: simsun, \5b8b\4f53;
             i {
               color: #fff;
               font-size: 19px;
@@ -388,46 +375,28 @@ a:hover {
             color: #333;
           }
         }
-        .tags {
-          width: 410px;
-          // height: 25px;
-          line-height: 30px;
-          overflow: hidden;
-          font-size: 12px;
-          color: #777;
-          span {
-            display: block;
-            float: left;
-          }
-          a {
-            display: block;
-            margin-left: 10px;
-            float: left;
-            width: 45px;
-            height: 22px;
-            line-height: 22px;
-            border-radius: 10px;
-            background-color: #f2f2f2;
-            text-align: center;
-            margin-top: 3px;
-            color: #777;
-            box-shadow: 0 0 2px 0 #666;
-          }
-        }
+      }
+      .intrad {
+        float: left;
+        margin-top: 15px;
+
         .intra {
-          // display: block;
-          max-height: 60px;
+          b {
+            color: #000;
+          }
+          color: #999;
+          max-height: 140px;
           line-height: 20px;
           font-size: 12px;
           margin-top: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 5;
           -webkit-box-orient: vertical;
         }
         .intra1 {
-          // display: none;
+          color: #999;
           line-height: 20px;
           font-size: 12px;
           margin-top: 5px;
@@ -452,9 +421,9 @@ a:hover {
       width: 640px;
       height: 100%;
       // background-color: #624216;
-      margin-top: 30px;
+      margin: 30px 0 50px 0;
       .head {
-        width: 640px;
+        width: 670px;
         height: 35px;
         border-bottom: 2px solid #c20c0c;
         line-height: 25px;
@@ -470,18 +439,12 @@ a:hover {
           }
         }
         .out {
-          margin-left: 260px;
-          color: #4996d1;
-          i {
-            font-size: 12px;
-          }
-          span {
-            margin-left: 5px;
-          }
+          float: right;
+          color: #999;
         }
       }
       .list-c {
-        width: 640px;
+        width: 670px;
         height: 100%;
         background-color: #fff;
         table {
@@ -491,17 +454,15 @@ a:hover {
           border-spacing: 0;
           table-layout: fixed;
           .w2 {
-            width: 237px;
+            width: 330px;
           }
           .w3 {
-            width: 111px;
+            width: 110px;
           }
           .w4 {
-            width: 89px;
+            width: 128px;
           }
-          .w5 {
-            max-width: 127px;
-          }
+
           thead {
             th {
               border-left: 1px solid #d3d3d3;
@@ -547,12 +508,14 @@ a:hover {
               span {
                 display: block;
                 float: left;
+                color: #999;
               }
               .btn-play {
                 display: block;
                 float: right;
                 font-size: 20px;
                 margin-top: 5px;
+                margin-right: 15px;
                 color: #b2b2b2;
                 &:hover {
                   color: #333;
@@ -576,6 +539,7 @@ a:hover {
               }
             }
             .w3 {
+              color: #777;
               .more-menu {
                 display: none;
                 a {
@@ -600,29 +564,6 @@ a:hover {
           }
         }
       }
-      .dol {
-        width: 640px;
-        height: 100%;
-        margin-top: 30px;
-        text-align: center;
-        font-size: 15px;
-        margin-bottom: 40px;
-        .now-do {
-          display: block;
-          width: 120px;
-          height: 30px;
-          border-radius: 18px;
-          line-height: 30px;
-          font-size: 12px;
-          background-color: #ff5a4c;
-          color: #ffffff;
-          text-align: center;
-          position: relative;
-          left: 50%;
-          margin-top: 20px;
-          transform: translateX(-50%);
-        }
-      }
     }
     .c-title {
       width: 100%;
@@ -639,66 +580,5 @@ a:hover {
       }
     }
   }
-  .right {
-    // position: relative;
-    float: right;
-    width: 268px;
-    // zoom: 1;
-    padding: 20px 30px 40px 30px;
-    h3 {
-      height: 23px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #ccc;
-      color: #333;
-      font-size: 12px;
-    }
-    .liker {
-      height: 130px;
-      margin-left: -13px;
-      padding-bottom: 25px;
-      li {
-        padding: 0 0 13px 13px;
-        float: left;
-        img {
-          width: 40px;
-          height: 40px;
-        }
-      }
-    }
-    .relate {
-      height: 325px;
-      li {
-        height: 50px;
-        margin-bottom: 10px;
-        img {
-          width: 50px;
-          height: 50px;
-        }
-      }
-      a {
-        display: block;
-        float: left;
-        h3 {
-          margin-left: 10px;
-          overflow: hidden;
-          text-overflow: ellipsis; //溢出用省略号显示
-          white-space: nowrap; //溢出不换行
-          width: 145px;
-          border-bottom: none;
-          margin-bottom: 0px;
-        }
-      }
-      span {
-        display: block;
-        float: left;
-        font-size: 12px;
-        margin-left: 10px;
-        a {
-          margin-left: -5px;
-          color: #666;
-        }
-      }
-    }
-  }
 }
-</style>
+</style>>

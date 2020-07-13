@@ -28,7 +28,7 @@
           <ul>
             <li v-for="item in suggest">
               <div class="s-info">
-                <a href="http://localhost:8080/list" >
+                <a href="/list">
                   <img :src=" item.picUrl " @click="sendSug(item.id)" alt />
                 </a>
                 <div class="bottom">
@@ -38,7 +38,7 @@
                 </div>
               </div>
               <p @click="sendSug(item.id)">
-                <a href="javascript:void(0)">{{item.name}}</a>
+                <a href="/list">{{item.name}}</a>
               </p>
             </li>
           </ul>
@@ -58,14 +58,14 @@
         <div class="disc">
           <ul>
             <li v-for="item in newDisc">
-              <a href="http://localhost:8080/album" @click="sendAlb(item.id)">
+              <a href="/album" @click="sendAlb(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
               <p>
-                <a href="http://localhost:8080/album" @click="sendAlb(item.id)">{{item.name}}</a>
+                <a href="/album" @click="sendAlb(item.id)">{{item.name}}</a>
               </p>
               <p class="disc-singer">
-                <a href="#">{{item.artist.name}}</a>
+                <a href="#" @click="sendSingerId(item.artist.id)">{{item.artist.name}}</a>
               </p>
             </li>
           </ul>
@@ -83,14 +83,20 @@
           </span>
         </div>
         <div class="top-list">
-          <dl v-for="item in topLists" :key="item">
+          <dl>
             <dt>
               <div class="top-pic">
-                <img :src="item.coverImgUrl" alt />
+                <a href="/top">
+                  <img
+                    @click="sendListIb('19723756')"
+                    src="https://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg"
+                    alt
+                  />
+                </a>
               </div>
               <div class="top-title">
-                <a href="#">
-                  <h3>{{item.name}}</h3>
+                <a href="/top" @click="sendListIb('19723756')">
+                  <h3>云音乐飙升榜</h3>
                 </a>
                 <div>
                   <a href="#">
@@ -105,9 +111,9 @@
             <dd>
               <ul>
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
-                <li v-for="(items,index) in item.tracks ">
+                <li v-for="(items,index) in top1s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="#">{{items.first}}</a>
+                  <a href="#" @click="sendMusicIb(items.id)">{{items.name}}</a>
                   <div class="oper">
                     <a href="#">
                       <i class="el-icon-video-play"></i>
@@ -122,7 +128,105 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="#">查看全部></a>
+                <a href="#" @click="sendListIb('19723756')">查看全部></a>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt>
+              <div class="top-pic">
+                <a href="/top">
+                  <img
+                    @click="sendListIb('3779629')"
+                    src="https://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg"
+                    alt
+                  />
+                </a>
+              </div>
+              <div class="top-title">
+                <a href="/top">
+                  <h3 @click="sendListIb('3779629')">云音乐新歌榜</h3>
+                </a>
+                <div>
+                  <a href="#">
+                    <i class="el-icon-video-play"></i>
+                  </a>
+                  <a href="#">
+                    <i class="el-icon-folder-add"></i>
+                  </a>
+                </div>
+              </div>
+            </dt>
+            <dd>
+              <ul>
+                <!-- 若要用数组中数组，需双层嵌套v-for -->
+                <li v-for="(items,index) in top2s " :key="index" v-if="index < 10">
+                  <span>{{index+1}}</span>
+                  <a href="#">{{items.name}}</a>
+                  <div class="oper">
+                    <a href="#">
+                      <i class="el-icon-video-play"></i>
+                    </a>
+                    <a href="#">
+                      <i class="el-icon-circle-plus-outline"></i>
+                    </a>
+                    <a href="#">
+                      <i class="el-icon-folder-add"></i>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div class="all">
+                <a href="#" @click="sendListIb('3779629')">查看全部></a>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt>
+              <div class="top-pic">
+                <a href="/top">
+                  <img
+                    @click="sendListIb('2884035')"
+                    src="https://p1.music.126.net/sBzD11nforcuh1jdLSgX7g==/18740076185638788.jpg"
+                    alt
+                  />
+                </a>
+              </div>
+              <div class="top-title">
+                <a href="/top">
+                  <h3 @click="sendListIb('2884035')">网易原创歌曲榜</h3>
+                </a>
+                <div>
+                  <a href="#">
+                    <i class="el-icon-video-play"></i>
+                  </a>
+                  <a href="#">
+                    <i class="el-icon-folder-add"></i>
+                  </a>
+                </div>
+              </div>
+            </dt>
+            <dd>
+              <ul>
+                <!-- 若要用数组中数组，需双层嵌套v-for -->
+                <li v-for="(items,index) in top3s " :key="index" v-if="index < 10">
+                  <span>{{index+1}}</span>
+                  <a href="#">{{items.name}}</a>
+                  <div class="oper">
+                    <a href="#">
+                      <i class="el-icon-video-play"></i>
+                    </a>
+                    <a href="#">
+                      <i class="el-icon-circle-plus-outline"></i>
+                    </a>
+                    <a href="#">
+                      <i class="el-icon-folder-add"></i>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div class="all">
+                <a href="#" @click="sendListIb('2884035')">查看全部></a>
               </div>
             </dd>
           </dl>
@@ -305,12 +409,18 @@ export default {
       newDisc: [],
       topLists: [],
       listName: [],
+      top1s: [],
+      top2s: [],
+      top3s: []
     };
   },
   mounted() {
     this.suggestMusic();
     this.newDic();
     this.topList();
+    this.top1();
+    this.top2();
+    this.top3();
   },
   methods: {
     suggestMusic: function() {
@@ -322,14 +432,23 @@ export default {
       );
     },
     sendSug(sugid) {
-          localStorage.setItem('sug',sugid)
+      localStorage.setItem("sug", sugid);
     },
     sendAlb(albid) {
-          localStorage.setItem('alb',albid)
+      localStorage.setItem("alb", albid);
+    },
+    sendListIb(listid) {
+      localStorage.setItem("list", listid);
+    },
+    sendMusicIb(musicid) {
+      localStorage.setItem("music", musicid);
+    },
+    sendSingerId(singerid) {
+      localStorage.setItem("singer", singerid);
     },
 
-    newDic: function() {
-      this.$http.get("/top/album?offset=0&limit=5").then(
+    newDic() {
+      this.$http.get("/top/album?limit=5").then(
         res => {
           this.newDisc = res.data.albums;
           console.log(this.newDisc);
@@ -337,12 +456,35 @@ export default {
         err => {}
       );
     },
-    topList: function() {
+    topList() {
       this.$http.get("/toplist/detail").then(
         res => {
           this.topLists = res.data.list;
-          // console.log(res);
-          // console.log(this.topLists[0].tracks[0].first);
+        },
+        err => {}
+      );
+    },
+    top1() {
+      this.$http.get("/playlist/detail?id=19723756").then(
+        res => {
+          this.top1s = res.data.playlist.tracks;
+          console.log(this.top1s);
+        },
+        err => {}
+      );
+    },
+    top2() {
+      this.$http.get("/playlist/detail?id=3779629").then(
+        res => {
+          this.top2s = res.data.playlist.tracks;
+        },
+        err => {}
+      );
+    },
+    top3() {
+      this.$http.get("/playlist/detail?id=2884035").then(
+        res => {
+          this.top3s = res.data.playlist.tracks;
         },
         err => {}
       );
@@ -354,7 +496,7 @@ export default {
 <style lang="less" scoped>
 .discover {
   width: 980px;
-  height: 1157px;
+  height: 1376px;
   margin: 0 auto;
   background-color: #fff;
   .left {
@@ -485,6 +627,7 @@ export default {
         height: 188px;
         margin: 16px 0;
         border: 1px solid #ddd;
+        background-color: #f5f5f5;
         p {
           overflow: hidden;
           font-size: 12px;
@@ -521,7 +664,7 @@ export default {
     }
     .top-list {
       width: 100%;
-      height: 250px;
+      height: 100%;
       margin-top: 20px;
       background-color: #f4f4f4;
       border: 1px solid #d3d3d3;
@@ -529,7 +672,7 @@ export default {
       dl {
         float: left;
         width: 225px;
-        height: 248px;
+        height: 100%;
         border-left: 1px solid #d3d3d3;
         box-shadow: 0px 6px 8px -10px #000;
         &:first-child {
@@ -548,6 +691,7 @@ export default {
             img {
               width: 80px;
               height: 80px;
+              cursor: pointer;
             }
           }
           .top-title {
@@ -569,7 +713,7 @@ export default {
         }
         dd {
           ul {
-            height: 96px;
+            height: 100%;
             li {
               padding-left: 20px;
               height: 32px;
@@ -637,7 +781,7 @@ export default {
           }
           .all {
             height: 32px;
-            // background-color: #e8e8e8;
+            background-color: #e8e8e8;
             line-height: 32px;
             a {
               float: right;

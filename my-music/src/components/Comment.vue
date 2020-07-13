@@ -1,9 +1,5 @@
 <template>
   <div class="comment">
-    <div class="c-title">
-      <h3>歌曲列表</h3>
-      <span>共2313455条评论</span>
-    </div>
     <div class="intarea">
       <div class="head">
         <img
@@ -11,15 +7,17 @@
           alt
         />
       </div>
-      <div class="input">
-        <textarea class="area" placeholder="评论"></textarea>
-        <div class="btn">
-          <a href="#">评论</a>
-          <span>140</span>
+      <div class="inputs">
+        <div class="input">
+          <textarea class="area" placeholder="评论"></textarea>
+          <div class="btn">
+            <a href="#">评论</a>
+            <span>140</span>
+          </div>
         </div>
       </div>
     </div>
-      <h5>评论</h5>
+    <h5>评论</h5>
     <ul>
       <li v-for="item in sug1">
         <div class="head">
@@ -62,94 +60,103 @@
 
 <script>
 export default {
+  props: ["Ids"],
   data() {
     return {
-      sugId: '',
+      sugIds: "",
       sug1: [],
-      sug2:[],
-
+      sug2: []
     };
   },
   mounted() {
     this.getSug();
   },
+  watch: {
+    Ids: "getSug" // 值为methods的方法名
+  },
   methods: {
     getSug() {
-      this.sugId = localStorage.getItem("sug");
-      // console.log(this.sugId);
-      this.$http.get("/comment/playlist?id=" + this.sugId).then(
-        res => {
-          this.sug1 = res.data.hotComments;
-          this.sug2 = res.data.comments;
-          // console.log(this.sug);
-        },
-        err => {}
-      );
-    },
-    
+        console.log(this.Ids);
+
+      if (this.Ids != null) {
+        console.log(this.Ids);
+        this.$http.get("/comment/playlist?id=" + this.Ids).then(
+          res => {
+            this.sug1 = res.data.hotComments;
+            this.sug2 = res.data.comments;
+            // console.log(this.sug);
+          },
+          err => {}
+        );
+      } else {
+        this.sugIds = localStorage.getItem("sug");
+            // console.log(this.sugIds);
+        this.$http.get("/comment/playlist?id=" + this.sugIds).then(
+          res => {
+            this.sug1 = res.data.hotComments;
+            this.sug2 = res.data.comments;
+          },
+          err => {}
+        );
+      }
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
 .comment {
-  width: 640px;
-  .c-title {
-    width: 640px;
-    height: 35px;
-    border-bottom: 2px solid #c20c0c;
-    line-height: 25px;
-    h3 {
-      float: left;
-      font-weight: normal;
-    }
-    span {
-      margin-left: 20px;
-      font-size: 12px;
-    }
-  }
+  width: 100%;
+
   .intarea {
     width: 100%;
     height: 98px;
     margin-top: 20px;
+    position: relative;
     .head {
-      float: left;
+      position: absolute;
+      left: 0;
+      width: 50px;
       img {
         width: 50px;
         height: 50px;
       }
     }
-    .input {
+    .inputs {
       float: left;
-      .area {
-        height: 63px;
-        display: block;
-        width: 579px;
-        margin-left: 10px;
-        resize: none;
-      }
-      .btn {
-        span {
-          font-size: 12px;
-          line-height: 35px;
-          color: #666;
-          float: right;
-        }
-        a {
+      width: 100%;
+      .input {
+        margin-left: 60px;
+        .area {
+          height: 63px;
           display: block;
-          float: right;
-          width: 46px;
-          height: 25px;
-          font-size: 12px;
-          text-align: center;
-          line-height: 25px;
-          border-radius: 3px;
-          color: #fff;
-          margin-top: 5px;
-          margin-left: 10px;
-          background-color: #2c7cc9;
-          &:hover {
-            background-color: #4794dc;
+          width: 100%;
+          // margin-left: 10px;
+          resize: none;
+        }
+        .btn {
+          span {
+            font-size: 12px;
+            line-height: 35px;
+            color: #666;
+            float: right;
+          }
+          a {
+            display: block;
+            float: right;
+            width: 46px;
+            height: 25px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 25px;
+            border-radius: 3px;
+            color: #fff;
+            margin-top: 5px;
+            margin-left: 10px;
+            background-color: #2c7cc9;
+            &:hover {
+              background-color: #4794dc;
+            }
           }
         }
       }
