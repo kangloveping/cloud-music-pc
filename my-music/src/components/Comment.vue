@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getSug() {
-        console.log(this.Ids);
+      console.log(this.Ids);
 
       if (this.Ids != null) {
         console.log(this.Ids);
@@ -90,7 +90,7 @@ export default {
         );
       } else {
         this.sugIds = localStorage.getItem("sug");
-            // console.log(this.sugIds);
+        // console.log(this.sugIds);
         this.$http.get("/comment/playlist?id=" + this.sugIds).then(
           res => {
             this.sug1 = res.data.hotComments;
@@ -128,6 +128,8 @@ export default {
       .input {
         margin-left: 60px;
         .area {
+          outline: none;
+          padding: 2px 5px;
           height: 63px;
           display: block;
           width: 100%;

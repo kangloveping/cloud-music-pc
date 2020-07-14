@@ -23,7 +23,7 @@
             <span>2018-09-07 创建</span>
           </div>
           <div class="operation">
-            <a href="#" class="btn1">
+            <a href="#" class="btn1" @click="playMusic(firstSongId)">
               <i class="el-icon-video-play"></i>
               <span>播放</span>
             </a>
@@ -32,7 +32,7 @@
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-folder-add"></i>
-              <span>({{sug.playlist.playCount}})</span>
+              <span>({{ subCounts}})</span>
             </a>
             <a href="#" class="btn2">
               <i class="el-icon-share"></i>
@@ -71,16 +71,20 @@
       </div>
       <div class="list">
         <div class="head">
-          <h3>歌曲列表</h3>
-          <span>20首歌</span>
-          <a href="#" class="out">
-            <i class="el-icon-headset"></i>
-            <span>生成外链播放器</span>
-          </a>
-          <span>
-            播放：
-            <b>345646333</b>次
-          </span>
+          <div class="head1">
+            <h3>歌曲列表</h3>
+            <span>共{{sug.playlist.trackCount}} 首歌</span>
+          </div>
+          <div class="head2">
+            <a href="#" class="out">
+              <i class="el-icon-headset"></i>
+              <span>生成外链播放器</span>
+            </a>
+            <span>
+              播放：
+              <b>{{sug.playlist.playCount}}</b>次
+            </span>
+          </div>
         </div>
         <div class="list-c">
           <table>
@@ -108,12 +112,12 @@
                 <td class="w1">
                   <div>
                     <span>{{index}}</span>
-                    <i class="el-icon-video-play btn-play"></i>
+                    <i class="el-icon-video-play btn-play" @click="playMusic(item.id)"></i>
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="#" class="song">{{item.name}}</a>
-                  <a href="#" class="mv" v-show="item.mv"></a>
+                  <a href="/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
+                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -141,7 +145,7 @@
                   </a>
                 </td>
                 <td class="w5">
-                  <a href="#">{{item.al.name}}</a>
+                  <a href="/album" @click="sendAlbumId(item.al.id)">{{item.al.name}}</a>
                 </td>
               </tr>
             </tbody>
@@ -153,11 +157,10 @@
         </div>
       </div>
       <div class="c-title">
-        <h3>歌曲列表</h3>
-        <span>共2313455条评论</span>
+        <h3>评论</h3>
+        <span>共{{comments}} 条评论</span>
       </div>
       <Comment></Comment>
-
     </div>
     <div class="right">
       <h3>喜欢这个歌单的人</h3>
@@ -174,10 +177,10 @@
       <div class="relate">
         <ul>
           <li v-for="item in relatives">
-            <a href="#">
+            <a href="/list" @click="sendListId(item.id)">
               <img :src="item.coverImgUrl" alt />
             </a>
-            <a href="#">
+            <a href="/list" @click="sendListId(item.id)">
               <h3>{{item.name}}</h3>
             </a>
             <span>by</span>
@@ -187,6 +190,9 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="audio">
+      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
     </div>
   </div>
 </template>
@@ -201,22 +207,65 @@ export default {
       isShow: true,
       sug: [],
       collects: [],
-      relatives: []
+      relatives: [],
+      musicUrl: "",
+      audioIsShow: false,
+      comments: "",
+      subCounts: "",
+      firstSongId:'',
     };
   },
   mounted() {
     this.getSug();
     this.collect();
     this.relative();
+    this.counts();
   },
   methods: {
+    sendMvId(mvid) {
+      localStorage.setItem("mvid", mvid);
+    },
+    sendMusicId(musicid) {
+      localStorage.setItem("music", musicid);
+    },
+    sendAlbumId(albumid) {
+      localStorage.setItem("alb", albumid);
+    },
+    sendListId(listid) {
+      localStorage.setItem("sug", listid);
+    },
+    playMusic(musicid) {
+      this.audioIsShow = true;
+      this.$http.get("/song/url?id=" + musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
     getSug() {
       this.sugId = localStorage.getItem("sug");
       // console.log(this.sugId);
       this.$http.get("/playlist/detail?id=" + this.sugId).then(
         res => {
           this.sug = res.data;
-          // console.log(this.sug);
+          this.firstSongId = res.data.playlist.tracks[0].id;
+          console.log(this.firstSongId);
+          let counts = parseInt(this.sug.playlist.subscribedCount / 10000);
+          console.log(counts);
+          if (counts > 0) {
+            this.subCounts = counts + "万";
+          } else {
+            this.subCounts = this.sug.playlist.subscribedCount;
+          }
+        },
+        err => {}
+      );
+      this.$http.get("/comment/playlist?id=" + this.sugId).then(
+        res => {
+          this.comments = res.data.total;
+          // console.log(this.comments);
         },
         err => {}
       );
@@ -237,10 +286,12 @@ export default {
       this.$http.get("/related/playlist?id=" + this.sugId).then(
         res => {
           this.relatives = res.data.playlists;
+          console.log(this.relatives);
         },
         err => {}
       );
-    }
+    },
+    counts() {}
   },
   components: {
     Comment
@@ -303,7 +354,8 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("https://s2.music.126.net/style/web2/img/icon.png?eeee471ebb979bb12ecdbb1c98108007") 0 -243px no-repeat;
+            background: url("https://s2.music.126.net/style/web2/img/icon.png?eeee471ebb979bb12ecdbb1c98108007")
+              0 -243px no-repeat;
           }
           div {
             margin-left: 64px;
@@ -342,7 +394,8 @@ a:hover {
             float: left;
             width: 11px;
             height: 13px;
-            background: url("../assets/img/icon.png") 0 0 no-repeat;
+            background: url("https://s2.music.126.net/style/web2/img/icon.png?eeee471ebb979bb12ecdbb1c98108007")
+              0 0 no-repeat;
             margin-top: 10px;
           }
         }
@@ -458,6 +511,12 @@ a:hover {
         height: 35px;
         border-bottom: 2px solid #c20c0c;
         line-height: 25px;
+        .head1 {
+          float: left;
+        }
+        .head2 {
+          float: right;
+        }
         h3 {
           float: left;
           font-weight: normal;
@@ -470,7 +529,7 @@ a:hover {
           }
         }
         .out {
-          margin-left: 260px;
+          // margin-left: 240px;
           color: #4996d1;
           i {
             font-size: 12px;
@@ -547,6 +606,7 @@ a:hover {
               span {
                 display: block;
                 float: left;
+                color: #999;
               }
               .btn-play {
                 display: block;
@@ -554,6 +614,7 @@ a:hover {
                 font-size: 20px;
                 margin-top: 5px;
                 color: #b2b2b2;
+                cursor: pointer;
                 &:hover {
                   color: #333;
                 }
@@ -576,6 +637,7 @@ a:hover {
               }
             }
             .w3 {
+              color: #999;
               .more-menu {
                 display: none;
                 a {
@@ -698,6 +760,23 @@ a:hover {
           color: #666;
         }
       }
+    }
+  }
+  .audio {
+    width: 982px;
+    height: 40px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 999999;
+    audio {
+      width: 100%;
+      height: 40px;
+      // background-color: #666;
+      outline: none;
+      border: 1px solid #dddddd;
+      border-radius: 20px;
     }
   }
 }

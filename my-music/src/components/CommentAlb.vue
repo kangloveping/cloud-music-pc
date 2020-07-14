@@ -121,6 +121,9 @@ export default {
     .input {
       float: left;
       .area {
+padding: 2px 5px;
+
+        outline: none;
         height: 63px;
         display: block;
         width: 579px;

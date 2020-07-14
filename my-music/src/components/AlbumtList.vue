@@ -20,8 +20,8 @@
           <p>发行公司： {{alb.album.company}}</p>
 
           <div class="operation">
-            <a href="#" class="btn1">
-              <i class="el-icon-video-play"></i>
+            <a href="#" class="btn1" @click="playMusic(firstSongId)">
+              <i class="el-icon-video-play" ></i>
               <span>播放</span>
             </a>
             <a href="#" class="btn1">
@@ -50,13 +50,11 @@
             <b>专辑介绍：</b>
             <br />
             {{alb.album.description}}
-            <!-- {{sug.playlist.description }} -->
           </p>
           <p class="intra1" v-show="!isShow">
             <b>专辑介绍：</b>
             <br />
             {{alb.album.description}}
-            <!-- {{sug.playlist.description }} -->
           </p>
           <a href="javascript:void(0)" class="moreIntra" v-show="isShow" @click="isShow1">
             展开
@@ -100,12 +98,12 @@
                 <td class="w1">
                   <div>
                     <span>{{index+1}}</span>
-                    <i class="el-icon-video-play btn-play"></i>
+                    <i class="el-icon-video-play btn-play" @click="playMusic(item.id)"></i>
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="#" class="song">{{item.name}}</a>
-                  <a href="#" class="mv" v-show="item.mv"></a>
+                  <a href="/song" class="song" @click="sendSongId(item.id)">{{item.name}}</a>
+                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -197,10 +195,10 @@
       <div class="relate">
         <ul>
           <li v-for="item in authAlb">
-            <a href="#">
+            <a href="/album" @click="sendAlbumId(item.id)">
               <img :src="item.picUrl" alt />
             </a>
-            <a href="#">
+            <a href="/album" @click="sendAlbumId(item.id)">
               <h3>{{item.name}}</h3>
             </a>
             <span>2020-07-12</span>
@@ -208,6 +206,9 @@
         </ul>
       </div>
     </div>
+    <div class="audio">
+    <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+  </div>
   </div>
 </template>
 
@@ -224,7 +225,11 @@ export default {
       alb: [],
       authAlb: [],
       collects: [],
-      relatives: []
+      relatives: [],
+      musicUrl: "",
+      firstSongId:'',
+
+      audioIsShow: false
     };
   },
   //相当于ready函数
@@ -239,13 +244,33 @@ export default {
     artId: "getAuthAlb" // 值为methods的方法名
   },
   methods: {
+    sendMvId(mvid){
+      localStorage.setItem('mvid', mvid);
+    },
+    sendSongId(mvid){
+      localStorage.setItem('music', mvid);
+    },
+    sendAlbumId(albumid){
+      localStorage.setItem('alb', albumid);
+    },
+    playMusic(musicid) {
+      this.audioIsShow = true;
+      this.$http.get("/song/url?id=" + musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
     getAlb() {
       this.albId = localStorage.getItem("alb");
       this.$http.get("/album?id=" + this.albId).then(
         res => {
           this.alb = res.data;
           this.artId = res.data.songs[0].ar[0].id;
-          console.log(this.artId);
+          this.firstSongId = res.data.songs[0].id;
+          console.log(this.firstSongId);
         },
         err => {}
       );
@@ -255,7 +280,7 @@ export default {
         this.$http.get("/artist/album?limit=5&id=" + this.artId).then(
           res => {
             this.authAlb = res.data.hotAlbums;
-            console.log(this.authAlb);
+            // console.log(this.authAlb);
           },
           err => {}
         );
@@ -555,6 +580,8 @@ a:hover {
                 margin-top: 5px;
                 margin-right: 15px;
                 color: #b2b2b2;
+                cursor: pointer;
+
                 &:hover {
                   color: #333;
                 }
@@ -687,6 +714,23 @@ a:hover {
         margin-left: 10px;
         color: #666;
       }
+    }
+  }
+  .audio {
+    width: 982px;
+    height: 40px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 999999;
+    audio {
+      width: 100%;
+      height: 40px;
+      // background-color: #666;
+      outline: none;
+      border: 1px solid #dddddd;
+      border-radius: 20px;
     }
   }
 }

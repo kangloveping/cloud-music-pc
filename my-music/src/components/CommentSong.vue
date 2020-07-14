@@ -65,7 +65,7 @@ export default {
     return {
       musicid: "",
       sug1: [],
-      sug2: [],
+      sug2: []
     };
   },
   mounted() {
@@ -128,6 +128,8 @@ export default {
       .input {
         margin-left: 60px;
         .area {
+          outline: none;
+          padding: 2px 5px;
           height: 63px;
           display: block;
           width: 100%;

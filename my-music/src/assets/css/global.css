@@ -1,5 +1,7 @@
 html, body, #app {
     height: 100%;
+    width: auto;
+    overflow-y: overlay;
 }
 
 * {

@@ -88,14 +88,14 @@
               <div class="top-pic">
                 <a href="/top">
                   <img
-                    @click="sendListIb('19723756')"
+                    @click="sendListId('19723756')"
                     src="https://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg"
                     alt
                   />
                 </a>
               </div>
               <div class="top-title">
-                <a href="/top" @click="sendListIb('19723756')">
+                <a href="/top" @click="sendListId('19723756')">
                   <h3>云音乐飙升榜</h3>
                 </a>
                 <div>
@@ -113,9 +113,9 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top1s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="/song" @click="sendMusicIb(items.id)">{{items.name}}</a>
+                  <a href="/song" @click="sendMusicId(items.id)">{{items.name}}</a>
                   <div class="oper">
-                    <a href="#">
+                    <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
                     </a>
                     <a href="#">
@@ -128,7 +128,7 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="#" @click="sendListIb('19723756')">查看全部></a>
+                <a href="/top" @click="sendListId('19723756')">查看全部></a>
               </div>
             </dd>
           </dl>
@@ -137,7 +137,7 @@
               <div class="top-pic">
                 <a href="/top">
                   <img
-                    @click="sendListIb('3779629')"
+                    @click="sendListId('3779629')"
                     src="https://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg"
                     alt
                   />
@@ -145,7 +145,7 @@
               </div>
               <div class="top-title">
                 <a href="/top">
-                  <h3 @click="sendListIb('3779629')">云音乐新歌榜</h3>
+                  <h3 @click="sendListId('3779629')">云音乐新歌榜</h3>
                 </a>
                 <div>
                   <a href="#">
@@ -164,7 +164,7 @@
                   <span>{{index+1}}</span>
                   <a href="/song">{{items.name}}</a>
                   <div class="oper">
-                    <a href="#">
+                    <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
                     </a>
                     <a href="#">
@@ -177,7 +177,7 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="#" @click="sendListIb('3779629')">查看全部></a>
+                <a href="/top" @click="sendListId('3779629')">查看全部></a>
               </div>
             </dd>
           </dl>
@@ -186,7 +186,7 @@
               <div class="top-pic">
                 <a href="/top">
                   <img
-                    @click="sendListIb('2884035')"
+                    @click="sendListId('2884035')"
                     src="https://p1.music.126.net/sBzD11nforcuh1jdLSgX7g==/18740076185638788.jpg"
                     alt
                   />
@@ -194,7 +194,7 @@
               </div>
               <div class="top-title">
                 <a href="/top">
-                  <h3 @click="sendListIb('2884035')">网易原创歌曲榜</h3>
+                  <h3 @click="sendListId('2884035')">网易原创歌曲榜</h3>
                 </a>
                 <div>
                   <a href="#">
@@ -213,7 +213,7 @@
                   <span>{{index+1}}</span>
                   <a href="/song">{{items.name}}</a>
                   <div class="oper">
-                    <a href="#">
+                    <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
                     </a>
                     <a href="#">
@@ -226,7 +226,7 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="#" @click="sendListIb('2884035')">查看全部></a>
+                <a href="/top" @click="sendListId('2884035')">查看全部></a>
               </div>
             </dd>
           </dl>
@@ -397,11 +397,20 @@
         </ul>
       </div>
     </div>
+    <div class="audio">
+      <audio v-show="audioIsShow"
+        :src="musicUrl"
+        controls
+        loop
+        autoplay
+      ></audio>
+    </div>
   </div>
 </template>
 
 <script>
 import bus from "../assets/event.js";
+
 export default {
   data() {
     return {
@@ -411,7 +420,9 @@ export default {
       listName: [],
       top1s: [],
       top2s: [],
-      top3s: []
+      top3s: [],
+      musicUrl: "",
+      audioIsShow:false,
     };
   },
   mounted() {
@@ -423,6 +434,16 @@ export default {
     this.top3();
   },
   methods: {
+    playMusic(musicid) {
+      this.audioIsShow = true;
+      this.$http.get("/song/url?id=" + musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
     suggestMusic: function() {
       this.$http.get("/personalized?limit=8").then(
         res => {
@@ -437,10 +458,10 @@ export default {
     sendAlb(albid) {
       localStorage.setItem("alb", albid);
     },
-    sendListIb(listid) {
+    sendListId(listid) {
       localStorage.setItem("list", listid);
     },
-    sendMusicIb(musicid) {
+    sendMusicId(musicid) {
       localStorage.setItem("music", musicid);
     },
     sendSingerId(singerid) {
@@ -451,7 +472,7 @@ export default {
       this.$http.get("/top/album?limit=5").then(
         res => {
           this.newDisc = res.data.albums;
-          console.log(this.newDisc);
+          // console.log(this.newDisc);
         },
         err => {}
       );
@@ -468,7 +489,7 @@ export default {
       this.$http.get("/playlist/detail?id=19723756").then(
         res => {
           this.top1s = res.data.playlist.tracks;
-          console.log(this.top1s);
+          // console.log(this.top1s);
         },
         err => {}
       );
@@ -921,6 +942,23 @@ export default {
           }
         }
       }
+    }
+  }
+  .audio {
+    width: 982px;
+    height: 40px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 999999;
+    audio {
+      width: 100%;
+      height: 40px;
+      // background-color: #666;
+      outline: none;
+      border: 1px solid #dddddd;
+      border-radius: 20px;
     }
   }
 }

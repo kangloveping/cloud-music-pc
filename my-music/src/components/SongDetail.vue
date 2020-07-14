@@ -25,7 +25,7 @@
             </span>
           </div>
           <div class="operation">
-            <a href="#" class="btn1">
+            <a href="#" class="btn1" @click="playMusic1()">
               <i class="el-icon-video-play"></i>
               <span>播放</span>
             </a>
@@ -80,15 +80,14 @@
         <ul>
           <li v-for="(item,index) in authAlbum" v-if="index<5">
             <div class="head">
-              <a href="#">
+              <a href="/album" @click="sendAlbumId(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
             </div>
             <div class="infos">
-              <h3>{{item.name}}</h3>
+              <a href="/album"><h3 @click="sendAlbumId(item.id)">{{item.name}}</h3></a>
               <p>
-                by
-                <span>{{item.company}}</span>
+                <span>{{item.subType}}</span>
               </p>
             </div>
           </li>
@@ -100,8 +99,8 @@
           <li v-for="item in alikeSongs">
             <div class="inf1">
               <div class="inf">
-                <a href="#">
-                  <h3>{{item.name}}</h3>
+                <a href="/song">
+                  <h3 @click="sendMusicId(item.id)">{{item.name}}</h3>
                 </a>
               </div>
               <div class="inf">
@@ -112,12 +111,15 @@
             </div>
 
             <div class="menu">
-              <i class="el-icon-caret-right"></i>
+              <i class="el-icon-caret-right" @click="playMusic(item.id)"></i>
               <i class="el-icon-plus"></i>
             </div>
           </li>
         </ul>
       </div>
+    </div>
+    <div class="audio">
+      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
     </div>
   </div>
 </template>
@@ -140,7 +142,9 @@ export default {
       singerId: "",
       authAlbum: [],
       alikeSongs: [],
-      total:'',
+      total: "",
+      musicUrl: "",
+      audioIsShow: false
     };
   },
   mounted() {
@@ -154,12 +158,40 @@ export default {
     singerId: "getAuthAlbum"
   },
   methods: {
+    sendAlbumId(albumid) {
+      console.log(albumid);
+      localStorage.setItem("alb", albumid);
+    },
+    sendMusicId(musicid) {
+      console.log(musicid);
+      localStorage.setItem("music", musicid);
+    },
+    playMusic(musicid) {
+      this.audioIsShow = true;
+      this.$http.get("/song/url?id=" + musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
+    playMusic1() {
+      this.audioIsShow = true;
+      this.$http.get("/song/url?id=" + this.musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
     getMusicId() {
       this.musicid = localStorage.getItem("music");
       //   console.log(this.musicid);
       this.$http.get("/simi/song?id=" + this.musicid).then(
         res => {
-          //   console.log(res.data.songs);
+            console.log(res.data.songs);
           this.alikeSongs = res.data.songs;
         },
         err => {}
@@ -202,13 +234,13 @@ export default {
         err => {}
       );
     },
-    getCommentCount(){
-        this.$http.get("/comment/music?limit=50&id=" + this.musicid).then(
-          res => {
-            this.total = res.data.total;
-          },
-          err => {}
-        );
+    getCommentCount() {
+      this.$http.get("/comment/music?limit=50&id=" + this.musicid).then(
+        res => {
+          this.total = res.data.total;
+        },
+        err => {}
+      );
     },
     isShow1() {
       this.isShow = !this.isShow;
@@ -425,10 +457,14 @@ export default {
         .infos {
           float: left;
           margin-left: 5px;
+          width: 150px;
           h3 {
             float: none;
             border: none;
             margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           p {
             font-size: 12px;
@@ -493,6 +529,23 @@ export default {
           color: #a3a3a3;
         }
       }
+    }
+  }
+  .audio {
+    width: 982px;
+    height: 40px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 999999;
+    audio {
+      width: 100%;
+      height: 40px;
+      // background-color: #666;
+      outline: none;
+      border: 1px solid #dddddd;
+      border-radius: 20px;
     }
   }
 }

@@ -42,7 +42,7 @@
           <p>最近更新： 07月13日 （每天更新）</p>
 
           <div class="operation">
-            <a href="#" class="btn1">
+            <a href="#" class="btn1" @click="playMusic(firstSongId)">
               <i class="el-icon-video-play"></i>
               <span>播放</span>
             </a>
@@ -100,12 +100,12 @@
                 <td class="w1">
                   <div>
                     <span>{{index+1}}</span>
-                    <i class="el-icon-video-play btn-play"></i>
+                    <i class="el-icon-video-play btn-play" @click="playMusic(item.id)"></i>
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="#" class="song">{{item.name}}</a>
-                  <a href="#" class="mv" v-show="item.mv"></a>
+                  <a href="/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
+                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -143,6 +143,9 @@
       </div>
       <Comment :Ids="listId" v-if="flag"></Comment>
     </div>
+    <div class="audio">
+      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+    </div>
   </div>
 </template>
 
@@ -154,7 +157,10 @@ export default {
     return {
       detail: [],
       allTop: [],
-      listId: ""
+      listId: "",
+      musicUrl: "",
+      audioIsShow: false,
+      firstSongId: ""
     };
   },
   mounted() {
@@ -163,6 +169,24 @@ export default {
     this.allTops();
   },
   methods: {
+    sendMusicId(musicid) {
+      localStorage.setItem("music", musicid);
+    },
+    sendMvId(mvid) {
+      localStorage.setItem("mvid", mvid);
+    },
+    playMusic(musicid) {
+      this.audioIsShow = true;
+          console.log(musicid);
+
+      this.$http.get("/song/url?id=" + musicid).then(
+        res => {
+          this.musicUrl = res.data.data[0].url;
+          // console.log(this.musicUrl);
+        },
+        err => {}
+      );
+    },
     //获取榜单详情json
     getDetail() {
       //获取通过a链接缓存在localStorage的list ID数据
@@ -170,6 +194,9 @@ export default {
       this.$http.get("/playlist/detail?id=" + this.listId).then(
         res => {
           this.detail = res.data.playlist;
+
+          this.firstSongId = res.data.playlist.tracks[0].id;
+          // console.log(this.firstSongId);
         },
         err => {}
       );
@@ -197,12 +224,7 @@ export default {
         },
         err => {}
       );
-    },
-    
-    // getListId() {
-    //   this.listId = localStorage.getItem("list");
-    //   this.flag = true;
-    // }
+    }
   },
   components: {
     Comment
@@ -578,6 +600,23 @@ export default {
         margin-left: 20px;
         font-size: 12px;
       }
+    }
+  }
+  .audio {
+    width: 982px;
+    height: 40px;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 999999;
+    audio {
+      width: 100%;
+      height: 40px;
+      // background-color: #666;
+      outline: none;
+      border: 1px solid #dddddd;
+      border-radius: 20px;
     }
   }
 }

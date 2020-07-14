@@ -2,13 +2,13 @@
   <div>
     <div class="header">
       <div>
-        <a href="javascript:void(0)" class="logo"></a>
+        <a href="/" class="logo"></a>
       </div>
       <div>
         <ul class="nav">
           <li :class="isActive">
             <span>
-              <a href="javascript:void(0)">发现音乐</a>
+              <a href="/">发现音乐</a>
             </span>
             <i class="el-icon-caret-top"></i>
           </li>
