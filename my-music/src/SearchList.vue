@@ -236,6 +236,7 @@ a:hover {
       border: 1px solid #c2bbbb;
       padding: 0 20px;
       box-shadow: inset 0px 10px 7px -13px #000;
+      outline: none;
     }
     .btn-search {
       width: 50px;
@@ -340,9 +341,12 @@ a:hover {
             font-size: 20px;
             margin-right: 10px;
             color: #b2b2b2;
+              cursor: pointer;
+
             &:hover {
               color: #333;
             }
+           
           }
         }
         .w2 {
