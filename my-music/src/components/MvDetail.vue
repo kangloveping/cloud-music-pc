@@ -70,7 +70,6 @@
               </div>
             </div>
           </li>
-          
         </ul>
         <el-pagination background layout="prev, pager, next" :total="1000" class="page"></el-pagination>
       </div>
@@ -88,11 +87,11 @@
       <div class="relate">
         <ul>
           <li v-for="item in simiMv">
-            <a href="/mv" @click="sendMvId(item.id)">
+            <a href="javascript:location.reload();" @click="sendMvId(item.id)">
               <img :src="item.cover" alt />
             </a>
             <div class="mes">
-              <a href="/mv" @click="sendMvId(item.id)">
+              <a href="javascript:location.reload();" @click="sendMvId(item.id)">
                 <h3>{{item.name}}</h3>
               </a>
               <p
@@ -100,7 +99,7 @@
               ></p>
               <span>by</span>
               <span>
-                <a href="#" @click="sendSingerId(item.artistId)">{{item.artistName}}</a>
+                <a href="#/singer" @click="sendSingerId(item.artistId)">{{item.artistName}}</a>
               </span>
             </div>
           </li>
@@ -121,13 +120,12 @@ export default {
       mvDetail: [],
       mvLike: [],
       simiMv: [],
-      comments: [],
+      comments: []
     };
   },
   mounted() {
     this.getMv();
     this.playMV();
-    
   },
   methods: {
     sendMvId(mvid) {
@@ -174,7 +172,7 @@ export default {
       this.$http.get("/comment/mv?id=" + this.mvId).then(
         res => {
           this.comments = res.data.comments;
-            console.log(this.comments);
+          console.log(this.comments);
         },
         err => {}
       );
@@ -455,9 +453,10 @@ a:hover {
           height: 54px;
         }
         .mes {
-          width: 95px;
+          width: 110px;
           height: 54px;
           float: left;
+
           p {
             font-size: 12px;
             margin-left: 10px;
@@ -485,10 +484,17 @@ a:hover {
         font-size: 12px;
         margin-left: 10px;
         color: #999;
-
+        &:last-child {
+        }
         a {
+          display: block;
+          width: 80px;
           margin-left: -5px;
           color: #999;
+          // display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis; //溢出用省略号显示
+          white-space: nowrap; //溢出不换行
         }
       }
     }

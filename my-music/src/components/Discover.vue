@@ -28,7 +28,7 @@
           <ul>
             <li v-for="item in suggest">
               <div class="s-info">
-                <a href="/list">
+                <a href="#/list">
                   <img :src=" item.picUrl " @click="sendSug(item.id)" alt />
                 </a>
                 <div class="bottom">
@@ -38,7 +38,7 @@
                 </div>
               </div>
               <p @click="sendSug(item.id)">
-                <a href="/list">{{item.name}}</a>
+                <a href="#/list">{{item.name}}</a>
               </p>
             </li>
           </ul>
@@ -58,14 +58,14 @@
         <div class="disc">
           <ul>
             <li v-for="item in newDisc">
-              <a href="/album" @click="sendAlb(item.id)">
+              <a href="#/album" @click="sendAlb(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
               <p>
-                <a href="/album" @click="sendAlb(item.id)">{{item.name}}</a>
+                <a href="#/album" @click="sendAlb(item.id)">{{item.name}}</a>
               </p>
               <p class="disc-singer">
-                <a href="#" @click="sendSingerId(item.artist.id)">{{item.artist.name}}</a>
+                <a href="#/singer" @click="sendSingerId(item.artist.id)">{{item.artist.name}}</a>
               </p>
             </li>
           </ul>
@@ -86,7 +86,7 @@
           <dl>
             <dt>
               <div class="top-pic">
-                <a href="/top">
+                <a href="#/top">
                   <img
                     @click="sendListId('19723756')"
                     src="https://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg"
@@ -95,11 +95,11 @@
                 </a>
               </div>
               <div class="top-title">
-                <a href="/top" @click="sendListId('19723756')">
+                <a href="#/top" @click="sendListId('19723756')">
                   <h3>云音乐飙升榜</h3>
                 </a>
                 <div>
-                  <a href="#">
+                  <a href="#" @click="playMusic(firstSong)">
                     <i class="el-icon-video-play"></i>
                   </a>
                   <a href="#">
@@ -113,7 +113,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top1s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="/song" @click="sendMusicId(items.id)">{{items.name}}</a>
+                  <a href="#/song" @click="sendMusicId(items.id)">{{items.name}}</a>
                   <div class="oper">
                     <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
@@ -128,14 +128,14 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="/top" @click="sendListId('19723756')">查看全部></a>
+                <a href="#/top" @click="sendListId('19723756')">查看全部></a>
               </div>
             </dd>
           </dl>
           <dl>
             <dt>
               <div class="top-pic">
-                <a href="/top">
+                <a href="#/top">
                   <img
                     @click="sendListId('3779629')"
                     src="https://p1.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg"
@@ -144,11 +144,11 @@
                 </a>
               </div>
               <div class="top-title">
-                <a href="/top">
+                <a href="#/top">
                   <h3 @click="sendListId('3779629')">云音乐新歌榜</h3>
                 </a>
                 <div>
-                  <a href="#">
+                  <a href="#" @click="playMusic(firstSong2)">
                     <i class="el-icon-video-play"></i>
                   </a>
                   <a href="#">
@@ -162,7 +162,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top2s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="/song">{{items.name}}</a>
+                  <a href="#/song">{{items.name}}</a>
                   <div class="oper">
                     <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
@@ -177,14 +177,14 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="/top" @click="sendListId('3779629')">查看全部></a>
+                <a href="#/top" @click="sendListId('3779629')">查看全部></a>
               </div>
             </dd>
           </dl>
           <dl>
             <dt>
               <div class="top-pic">
-                <a href="/top">
+                <a href="#/top">
                   <img
                     @click="sendListId('2884035')"
                     src="https://p1.music.126.net/sBzD11nforcuh1jdLSgX7g==/18740076185638788.jpg"
@@ -193,11 +193,11 @@
                 </a>
               </div>
               <div class="top-title">
-                <a href="/top">
+                <a href="#/top">
                   <h3 @click="sendListId('2884035')">网易原创歌曲榜</h3>
                 </a>
                 <div>
-                  <a href="#">
+                  <a href="#" @click="playMusic(firstSong3)">
                     <i class="el-icon-video-play"></i>
                   </a>
                   <a href="#">
@@ -211,7 +211,7 @@
                 <!-- 若要用数组中数组，需双层嵌套v-for -->
                 <li v-for="(items,index) in top3s " :key="index" v-if="index < 10">
                   <span>{{index+1}}</span>
-                  <a href="/song">{{items.name}}</a>
+                  <a href="#/song">{{items.name}}</a>
                   <div class="oper">
                     <a href="#" @click="playMusic(items.id)">
                       <i class="el-icon-video-play"></i>
@@ -226,7 +226,7 @@
                 </li>
               </ul>
               <div class="all">
-                <a href="/top" @click="sendListId('2884035')">查看全部></a>
+                <a href="#/top" @click="sendListId('2884035')">查看全部></a>
               </div>
             </dd>
           </dl>
@@ -398,12 +398,7 @@
       </div>
     </div>
     <div class="audio">
-      <audio v-show="audioIsShow"
-        :src="musicUrl"
-        controls
-        loop
-        autoplay
-      ></audio>
+      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
     </div>
   </div>
 </template>
@@ -422,7 +417,7 @@ export default {
       top2s: [],
       top3s: [],
       musicUrl: "",
-      audioIsShow:false,
+      audioIsShow: false
     };
   },
   mounted() {
@@ -489,7 +484,8 @@ export default {
       this.$http.get("/playlist/detail?id=19723756").then(
         res => {
           this.top1s = res.data.playlist.tracks;
-          // console.log(this.top1s);
+          this.firstSong = res.data.playlist.tracks[0].id;
+          console.log(this.firstSong);
         },
         err => {}
       );
@@ -498,6 +494,7 @@ export default {
       this.$http.get("/playlist/detail?id=3779629").then(
         res => {
           this.top2s = res.data.playlist.tracks;
+          this.firstSong2 = res.data.playlist.tracks[0].id;
         },
         err => {}
       );
@@ -506,6 +503,7 @@ export default {
       this.$http.get("/playlist/detail?id=2884035").then(
         res => {
           this.top3s = res.data.playlist.tracks;
+          this.firstSong3 = res.data.playlist.tracks[0].id;
         },
         err => {}
       );

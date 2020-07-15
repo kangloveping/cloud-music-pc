@@ -116,8 +116,8 @@
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
-                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
+                  <a href="#/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
+                  <a href="#/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -140,12 +140,12 @@
                   </div>
                 </td>
                 <td class="w4">
-                  <a href="#">
-                    <span v-for="items in item.ar">{{items.name}}</span>
+                  <a href="#/singer" >
+                    <span v-for="items in item.ar" @click="sendSingerId(items.id)">{{items.name}}</span>
                   </a>
                 </td>
                 <td class="w5">
-                  <a href="/album" @click="sendAlbumId(item.al.id)">{{item.al.name}}</a>
+                  <a href="#/album" @click="sendAlbumId(item.al.id)">{{item.al.name}}</a>
                 </td>
               </tr>
             </tbody>
@@ -177,10 +177,10 @@
       <div class="relate">
         <ul>
           <li v-for="item in relatives">
-            <a href="/list" @click="sendListId(item.id)">
+            <a href="javascript:location.reload();" @click="sendListId(item.id)">
               <img :src="item.coverImgUrl" alt />
             </a>
-            <a href="/list" @click="sendListId(item.id)">
+            <a href="javascript:location.reload();" @click="sendListId(item.id)">
               <h3>{{item.name}}</h3>
             </a>
             <span>by</span>
@@ -234,6 +234,9 @@ export default {
     sendListId(listid) {
       localStorage.setItem("sug", listid);
     },
+    sendSingerId(singerid) {
+      localStorage.setItem("singer", singerid);
+    },
     playMusic(musicid) {
       this.audioIsShow = true;
       this.$http.get("/song/url?id=" + musicid).then(
@@ -251,9 +254,7 @@ export default {
         res => {
           this.sug = res.data;
           this.firstSongId = res.data.playlist.tracks[0].id;
-          console.log(this.firstSongId);
           let counts = parseInt(this.sug.playlist.subscribedCount / 10000);
-          console.log(counts);
           if (counts > 0) {
             this.subCounts = counts + "万";
           } else {
@@ -631,7 +632,7 @@ a:hover {
                 width: 22px;
                 height: 20px;
                 float: left;
-                background: url("../assets/img/icon.png") 0 -18px no-repeat;
+                background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -18px no-repeat;
                 margin-top: 7px;
                 margin-left: 7px;
               }

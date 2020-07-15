@@ -102,8 +102,8 @@
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="/song" class="song" @click="sendSongId(item.id)">{{item.name}}</a>
-                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
+                  <a href="#/song" class="song" @click="sendSongId(item.id)">{{item.name}}</a>
+                  <a href="#/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -126,8 +126,8 @@
                   </div>
                 </td>
                 <td class="w4">
-                  <a href="#">
-                    <span v-for="items in item.ar">{{items.name}}</span>
+                  <a href="#/singer">
+                    <span v-for="items in item.ar" @click="sendSingerId(items.id)">{{items.name}}</span>
                   </a>
                 </td>
               </tr>
@@ -195,10 +195,10 @@
       <div class="relate">
         <ul>
           <li v-for="item in authAlb">
-            <a href="/album" @click="sendAlbumId(item.id)">
+            <a href="javascript:location.reload();" @click="sendAlbumId(item.id)">
               <img :src="item.picUrl" alt />
             </a>
-            <a href="/album" @click="sendAlbumId(item.id)">
+            <a href="javascript:location.reload();" @click="sendAlbumId(item.id)">
               <h3>{{item.name}}</h3>
             </a>
             <span>2020-07-12</span>
@@ -252,6 +252,9 @@ export default {
     },
     sendAlbumId(albumid){
       localStorage.setItem('alb', albumid);
+    },
+    sendSingerId(singerid) {
+      localStorage.setItem("singer", singerid);
     },
     playMusic(musicid) {
       this.audioIsShow = true;
@@ -375,7 +378,7 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("../assets/img/icon.png") 0 -186px no-repeat;
+            background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -186px no-repeat;
           }
           div {
             margin-left: 64px;
@@ -598,7 +601,7 @@ a:hover {
                 width: 22px;
                 height: 20px;
                 float: left;
-                background: url("../assets/img/icon.png") 0 -18px no-repeat;
+                background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -18px no-repeat;
                 margin-top: 7px;
                 margin-left: 7px;
               }

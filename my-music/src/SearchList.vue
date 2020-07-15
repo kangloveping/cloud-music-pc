@@ -28,8 +28,8 @@
                 </div>
               </td>
               <td class="w2">
-                <a href="#" class="song">{{item.name}}</a>
-                <a href="#" class="mv" v-show="item.mvid"></a>
+                <a href="#/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
+                <a href="#/mv" class="mv" @click="sendMvId(item.mvid)" v-show="item.mvid"></a>
               </td>
               <td class="w3">
                 <span class="time"></span>
@@ -49,12 +49,12 @@
                 </div>
               </td>
               <td class="w4">
-                <a href="#" v-for="items in item.artists">
-                  <span>{{items.name+' '}}</span>
+                <a href="#/singer" v-for="items in item.artists">
+                  <span @click="sendSingerId(items.id)">{{items.name+' '}}</span>
                 </a>
               </td>
               <td class="w5">
-                <a href="#">
+                <a href="#/album" @click="sendAlbumId(item.album.id)">
                   <span>《{{item.album.name}}》</span>
                 </a>
               </td>
@@ -71,13 +71,13 @@
         <ul>
           <li v-for="item in album">
             <div class="cover">
-              <a href>
+              <a href="#/album" @click="sendAlbumId(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
             </div>
 
             <p>
-              <a href>{{item.name}}</a>
+              <a href="#/album" @click="sendAlbumId(item.id)">{{item.name}}</a>
             </p>
             <a href>{{item.artist.name}}</a>
           </li>
@@ -88,7 +88,6 @@
     <div class="audio">
       <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
     </div>
-    
   </div>
 </template>
 
@@ -138,6 +137,18 @@ export default {
     this.changeTab();
   },
   methods: {
+    sendMvId(mvid) {
+      localStorage.setItem("mvid", mvid);
+    },
+    sendMusicId(musicid) {
+      localStorage.setItem("music", musicid);
+    },
+    sendAlbumId(albumid) {
+      localStorage.setItem("alb", albumid);
+    },
+    sendSingerId(singerid) {
+      localStorage.setItem("singer", singerid);
+    },
     playMusic(musicid) {
       // console.log('musicid')
       this.audioIsShow = true;
@@ -180,8 +191,8 @@ export default {
             res => {
               this.album = res.data.hotAlbums;
               console.log(this.album);
-              this.isShow1 = !this.isShow1;
-              this.isShow2 = !this.isShow2;
+              this.isShow1 = false;
+              this.isShow2 = true;
             },
             err => {}
           );
@@ -451,5 +462,4 @@ a:hover {
     border-radius: 20px;
   }
 }
-
 </style>>

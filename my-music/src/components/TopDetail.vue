@@ -104,8 +104,8 @@
                   </div>
                 </td>
                 <td class="w2">
-                  <a href="/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
-                  <a href="/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
+                  <a href="#/song" class="song" @click="sendMusicId(item.id)">{{item.name}}</a>
+                  <a href="#/mv" class="mv" v-show="item.mv" @click="sendMvId(item.mv)"></a>
                 </td>
                 <td class="w3">
                   <span
@@ -128,8 +128,8 @@
                   </div>
                 </td>
                 <td class="w4">
-                  <a href="#">
-                    <span v-for="items in item.ar">{{items.name}}</span>
+                  <a href="#/singer">
+                    <span v-for="items in item.ar" @click="sendSingerId(items.id)">{{items.name}}</span>
                   </a>
                 </td>
               </tr>
@@ -175,12 +175,18 @@ export default {
     sendMvId(mvid) {
       localStorage.setItem("mvid", mvid);
     },
+    sendSingerId(singerid) {
+      localStorage.setItem("singer", singerid);
+    },
     playMusic(musicid) {
       this.audioIsShow = true;
-          console.log(musicid);
+      console.log(this.firstSongId);
+      // console.log(musicid);
 
       this.$http.get("/song/url?id=" + musicid).then(
         res => {
+          console.log(musicid);
+
           this.musicUrl = res.data.data[0].url;
           // console.log(this.musicUrl);
         },
@@ -189,14 +195,17 @@ export default {
     },
     //获取榜单详情json
     getDetail() {
+      this.flag = false;
+
       //获取通过a链接缓存在localStorage的list ID数据
       this.listId = localStorage.getItem("list");
       this.$http.get("/playlist/detail?id=" + this.listId).then(
         res => {
           this.detail = res.data.playlist;
-
           this.firstSongId = res.data.playlist.tracks[0].id;
-          // console.log(this.firstSongId);
+          console.log(this.firstSongId);
+          //重启子组件进行传值
+          this.flag = true;
         },
         err => {}
       );
@@ -221,6 +230,8 @@ export default {
           this.listId = changeId;
           //重启子组件进行传值
           this.flag = true;
+          this.firstSongId = res.data.playlist.tracks[0].id;
+          console.log(this.firstSongId);
         },
         err => {}
       );
@@ -337,13 +348,7 @@ export default {
           line-height: 24px;
           // height: auto;
           margin-bottom: 12px;
-          i {
-            display: block;
-            float: left;
-            width: 54px;
-            height: 24px;
-            background: url("../assets/img/icon.png") 0 -186px no-repeat;
-          }
+          
           div {
             h3 {
               line-height: 24px;
@@ -555,7 +560,7 @@ export default {
                 width: 22px;
                 height: 20px;
                 float: left;
-                background: url("../assets/img/icon.png") 0 -18px no-repeat;
+                background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -18px no-repeat;
                 margin-top: 7px;
                 margin-left: 7px;
               }

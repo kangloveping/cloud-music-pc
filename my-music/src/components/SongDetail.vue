@@ -80,12 +80,12 @@
         <ul>
           <li v-for="(item,index) in authAlbum" v-if="index<5">
             <div class="head">
-              <a href="/album" @click="sendAlbumId(item.id)">
+              <a href="#/album" @click="sendAlbumId(item.id)">
                 <img :src="item.picUrl" alt />
               </a>
             </div>
             <div class="infos">
-              <a href="/album"><h3 @click="sendAlbumId(item.id)">{{item.name}}</h3></a>
+              <a href="#/album"><h3 @click="sendAlbumId(item.id)">{{item.name}}</h3></a>
               <p>
                 <span>{{item.subType}}</span>
               </p>
@@ -99,7 +99,7 @@
           <li v-for="item in alikeSongs">
             <div class="inf1">
               <div class="inf">
-                <a href="/song">
+                <a href="javascript:location.reload();">
                   <h3 @click="sendMusicId(item.id)">{{item.name}}</h3>
                 </a>
               </div>

@@ -76,10 +76,10 @@ export default {
   },
   methods: {
     getSug() {
-      console.log(this.Ids);
+      // console.log(this.Ids);
 
       if (this.Ids != null) {
-        console.log(this.Ids);
+        // console.log(this.Ids);
         this.$http.get("/comment/playlist?id=" + this.Ids).then(
           res => {
             this.sug1 = res.data.hotComments;

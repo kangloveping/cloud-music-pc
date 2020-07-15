@@ -2,13 +2,13 @@
   <div>
     <div class="header">
       <div>
-        <a href="/" class="logo"></a>
+        <a href="#/" class="logo"></a>
       </div>
       <div>
         <ul class="nav">
           <li :class="isActive">
             <span>
-              <a href="/">发现音乐</a>
+              <a href="#/">发现音乐</a>
             </span>
             <i class="el-icon-caret-top"></i>
           </li>
@@ -72,7 +72,7 @@ export default {
     searchMusic() {
       this.isActive='';
       localStorage.setItem("key", this.query);
-      window.location.href="http://localhost:8080/search";
+      window.location.href="http://localhost:8080#/search";
     }
   }
 };
@@ -109,7 +109,7 @@ a {
     width: 176px;
     height: 70px;
     float: left;
-    background: url("../assets/img/logo.png") 0 0 no-repeat;
+    background: url("https://s2.music.126.net/style/web2/img/frame/topbar.png?a0171321598fd0016c7202eb70849324") 0 0 no-repeat;
   }
   .nav {
     li {
@@ -146,7 +146,7 @@ a {
       display: block;
       width: 28px;
       height: 20px;
-      background: url("../assets/img/logo.png") -192px 0 no-repeat;
+      background: url("https://s2.music.126.net/style/web2/img/frame/topbar.png?a0171321598fd0016c7202eb70849324") -192px 0 no-repeat;
       top: 25px;
       left: -10px;
     }
