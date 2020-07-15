@@ -6,7 +6,7 @@ import './assets/css/global.css'
 import axios from 'axios'
 
 //配置请求的根路径
-axios.defaults.baseURL = 'https://autumnfish.cn/'
+axios.defaults.baseURL = '/api'
 Vue.prototype.$http = axios
 
 
