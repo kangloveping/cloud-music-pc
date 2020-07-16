@@ -72,7 +72,7 @@ export default {
     searchMusic() {
       this.isActive='';
       localStorage.setItem("key", this.query);
-      window.location.href="http://localhost:8080#/search";
+      window.location.href="#/search";
     }
   }
 };

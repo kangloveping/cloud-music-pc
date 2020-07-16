@@ -36,28 +36,8 @@
 </template>
 
 <script>
-import bus from "../assets/event.js";
 
-export default {
-  data() {
-    return {
-      msg: ""
-    };
-  },
-
-  destroyed() {},
-  methods: {
-    getMsg() {
-      bus.$on("send", data => {
-        this.msg = data;
-        console.log(data);
-      });
-    }
-  },
-  mounted() {
-    this.getMsg();
-  }
-};
+export default {};
 </script>
 
 <style scoped lang='less'>

@@ -398,13 +398,14 @@
       </div>
     </div>
     <div class="audio">
-      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      <transition name="fade">
+        <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-import bus from "../assets/event.js";
 
 export default {
   data() {
@@ -420,7 +421,7 @@ export default {
       audioIsShow: false
     };
   },
-  mounted() {
+  created() {
     this.suggestMusic();
     this.newDic();
     this.topList();
@@ -485,7 +486,7 @@ export default {
         res => {
           this.top1s = res.data.playlist.tracks;
           this.firstSong = res.data.playlist.tracks[0].id;
-          console.log(this.firstSong);
+          // console.log(this.firstSong);
         },
         err => {}
       );
@@ -513,6 +514,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  animation: bubbleup 2.5s ;
+}
+.fade-enter, .fade-leave-to {
+  @keyframes bubbleup {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
 .discover {
   width: 980px;
   height: 1376px;

@@ -21,7 +21,7 @@
 
           <div class="operation">
             <a href="#" class="btn1" @click="playMusic(firstSongId)">
-              <i class="el-icon-video-play" ></i>
+              <i class="el-icon-video-play"></i>
               <span>播放</span>
             </a>
             <a href="#" class="btn1">
@@ -145,47 +145,70 @@
       <h3>喜欢这个专辑的人</h3>
       <div class="liker">
         <ul>
-          <li > 
+          <li>
             <a href="#">
-              <img src="http://p1.music.126.net/hjViQJ8K5EpAn0EtKKFMQw==/109951164751942471.jpg?param=40y40" alt />
+              <img
+                src="http://p1.music.126.net/hjViQJ8K5EpAn0EtKKFMQw==/109951164751942471.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p1.music.126.net/tbpO1fXhQkCzkDmf5Y6OiQ==/109951165133108012.jpg?param=40y40" alt />
+              <img
+                src="http://p1.music.126.net/tbpO1fXhQkCzkDmf5Y6OiQ==/109951165133108012.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p1.music.126.net/L6gntQdgCqfq1hSfF8qz2Q==/1379887099423787.jpg?param=40y40" alt />
+              <img
+                src="http://p1.music.126.net/L6gntQdgCqfq1hSfF8qz2Q==/1379887099423787.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p1.music.126.net/SrZVxzLv97yyFESHcWRNUg==/109951163268802045.jpg?param=40y40" alt />
+              <img
+                src="http://p1.music.126.net/SrZVxzLv97yyFESHcWRNUg==/109951163268802045.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p1.music.126.net/x6uVjJAxtgdvhKcRavYUTQ==/109951163574547190.jpg?param=40y40" alt />
+              <img
+                src="http://p1.music.126.net/x6uVjJAxtgdvhKcRavYUTQ==/109951163574547190.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p2.music.126.net/n1tcdHwbSInlBTnq3_lbzQ==/109951164548638785.jpg?param=40y40" alt />
+              <img
+                src="http://p2.music.126.net/n1tcdHwbSInlBTnq3_lbzQ==/109951164548638785.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p2.music.126.net/CC93Vf1AeHBMKUHk9pJHMg==/109951165127100774.jpg?param=40y40" alt />
+              <img
+                src="http://p2.music.126.net/CC93Vf1AeHBMKUHk9pJHMg==/109951165127100774.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          <li >
+          <li>
             <a href="#">
-              <img src="http://p2.music.126.net/SkBLAcW89N5GmapuP1TR8A==/3265549540495909.jpg?param=40y40" alt />
+              <img
+                src="http://p2.music.126.net/SkBLAcW89N5GmapuP1TR8A==/3265549540495909.jpg?param=40y40"
+                alt
+              />
             </a>
           </li>
-          
         </ul>
       </div>
       <h3>
@@ -207,8 +230,10 @@
       </div>
     </div>
     <div class="audio">
-    <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
-  </div>
+      <transition name="fade">
+        <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -227,13 +252,12 @@ export default {
       collects: [],
       relatives: [],
       musicUrl: "",
-      firstSongId:'',
-
+      firstSongId: "",
       audioIsShow: false
     };
   },
-  //相当于ready函数
-  mounted() {
+
+  created() {
     this.getAlb();
     this.collect();
     this.relative();
@@ -244,14 +268,14 @@ export default {
     artId: "getAuthAlb" // 值为methods的方法名
   },
   methods: {
-    sendMvId(mvid){
-      localStorage.setItem('mvid', mvid);
+    sendMvId(mvid) {
+      localStorage.setItem("mvid", mvid);
     },
-    sendSongId(mvid){
-      localStorage.setItem('music', mvid);
+    sendSongId(mvid) {
+      localStorage.setItem("music", mvid);
     },
-    sendAlbumId(albumid){
-      localStorage.setItem('alb', albumid);
+    sendAlbumId(albumid) {
+      localStorage.setItem("alb", albumid);
     },
     sendSingerId(singerid) {
       localStorage.setItem("singer", singerid);
@@ -273,7 +297,7 @@ export default {
           this.alb = res.data;
           this.artId = res.data.songs[0].ar[0].id;
           this.firstSongId = res.data.songs[0].id;
-          console.log(this.firstSongId);
+          // console.log(this.firstSongId);
         },
         err => {}
       );
@@ -319,6 +343,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  animation: bubbleup 2.5s ;
+}
+.fade-enter, .fade-leave-to {
+  @keyframes bubbleup {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
 body {
   background-color: #fff;
   box-sizing: border-box;
@@ -378,7 +416,8 @@ a:hover {
             float: left;
             width: 54px;
             height: 24px;
-            background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -186px no-repeat;
+            background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25")
+              0 -186px no-repeat;
           }
           div {
             margin-left: 64px;
@@ -601,7 +640,8 @@ a:hover {
                 width: 22px;
                 height: 20px;
                 float: left;
-                background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25") 0 -18px no-repeat;
+                background: url("https://s2.music.126.net/style/web2/img/icon.png?913e541350023a580707df4a59791c25")
+                  0 -18px no-repeat;
                 margin-top: 7px;
                 margin-left: 7px;
               }

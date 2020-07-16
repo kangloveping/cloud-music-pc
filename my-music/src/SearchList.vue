@@ -86,7 +86,9 @@
     </div>
     <Footer></Footer>
     <div class="audio">
-      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      <transition name="fade">
+        <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      </transition>
     </div>
   </div>
 </template>
@@ -130,7 +132,7 @@ export default {
 
     // singerId
   },
-  mounted() {
+  created() {
     this.getKey();
     this.getSearch();
     this.searchMusic();
@@ -181,8 +183,6 @@ export default {
       this.isShow1 = true;
       this.isShow2 = false;
       this.status = 0;
-      // localStorage.setItem("key", this.query);
-      // window.location.href="http://localhost:8080/search";
     },
     changeTab() {
       switch (this.status) {
@@ -210,6 +210,23 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  // transition: all 2.5s;
+  animation: bubbleup 2.5s ;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  // opacity: 0;
+  // transform: translateY(-100px);
+  @keyframes bubbleup {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
 a:hover {
   text-decoration: underline;
 }

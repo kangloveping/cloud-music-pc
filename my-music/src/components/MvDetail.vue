@@ -123,7 +123,7 @@ export default {
       comments: []
     };
   },
-  mounted() {
+  created() {
     this.getMv();
     this.playMV();
   },

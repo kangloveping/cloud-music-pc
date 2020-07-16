@@ -13,7 +13,7 @@
           </el-carousel>
         </div>
       </div>
-      <div class="download" @click="sendMsg" value="向姐妹组件传递信息">
+      <div class="download">
         <a href="#"></a>
         <p>PC 安卓 iPhone WP iPad Mac 六大客户端</p>
       </div>
@@ -22,22 +22,17 @@
 </template>
 
 <script>
-import bus from "../assets/event.js";
 export default {
   data() {
     return {
       banPic: [],
-      tips:'I am your brother'
     };
   },
-  //钩子函数，相当于jquery里的ready函数，当文档加载完时自动执行
-  mounted() {
+  created() {
     this.lunBo();
   },
   methods: {
-    sendMsg(){
-          bus.$emit('send',this.tips);
-        },
+    
     lunBo() {
       this.$http.get("/banner?type=1").then(
         res => {

@@ -192,7 +192,9 @@
       </div>
     </div>
     <div class="audio">
-      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      <transition name="fade">
+        <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      </transition>
     </div>
   </div>
 </template>
@@ -215,7 +217,7 @@ export default {
       firstSongId:'',
     };
   },
-  mounted() {
+  created() {
     this.getSug();
     this.collect();
     this.relative();
@@ -301,6 +303,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  animation: bubbleup 2.5s ;
+}
+.fade-enter, .fade-leave-to {
+  @keyframes bubbleup {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
 body {
   background-color: #fff;
   box-sizing: border-box;

@@ -111,7 +111,9 @@
       </div>
     </div>
     <div class="audio">
-      <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      <transition name="fade">
+        <audio v-show="audioIsShow" :src="musicUrl" controls loop autoplay></audio>
+      </transition>
     </div>
   </div>
 </template>
@@ -140,7 +142,7 @@ export default {
   watch: {
     status: "changeTab"
   },
-  mounted() {
+  created() {
     this.getSinger();
     this.changeTab();
     this.getHotSinger();
@@ -254,6 +256,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  animation: bubbleup 2.5s ;
+}
+.fade-enter, .fade-leave-to {
+  @keyframes bubbleup {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
 a:hover {
   text-decoration: underline;
 }

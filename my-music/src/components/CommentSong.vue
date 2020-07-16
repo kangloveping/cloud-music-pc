@@ -68,7 +68,7 @@ export default {
       sug2: []
     };
   },
-  mounted() {
+  created() {
     this.getSug();
   },
   watch: {
